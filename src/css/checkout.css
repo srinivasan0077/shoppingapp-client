@@ -1,0 +1,49 @@
+.checkout-form-container{
+    border: 1px solid silver;
+    padding: 20px;
+}
+
+.input-same-line{
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+.input-checkout-style{
+    margin-right: 5px;
+}
+
+.checkout-link-style{
+    width: fit-content;
+    padding:5px;
+    font-size:18px;
+    color: maroon;
+    cursor: pointer;
+}
+
+.checkout-link-style:hover{
+    color: rgb(219, 125, 125);
+}
+
+.checkout-address{
+    display: flex;
+    flex-direction: row;
+    border: 1px solid green;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+}
+
+.radio-btn-container{
+    height: 20px;
+    justify-content: center;
+    align-items: center;
+    margin: 5px;
+    cursor: pointer;
+}
+
+.radio-btn{
+    border: 1px solid  black;
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
+}

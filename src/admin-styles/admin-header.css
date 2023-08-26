@@ -1,0 +1,22 @@
+.admin-header{
+    height: 80px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    border: 1px solid silver;
+}
+
+.admin-nav{
+    color: maroon;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.admin-nav:hover{
+    color: rgb(156, 85, 85);
+}
+
+.admin-img-style{
+    width: 100px;
+    height: 50px;
+}

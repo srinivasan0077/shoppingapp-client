@@ -1,0 +1,110 @@
+
+.item-view{
+    height: 500px;
+    margin:30px 200px 50px 200px;
+}
+
+.item-component{
+    display: flex;
+    flex-direction: row;
+}
+
+.img-view{
+    height: 500px;
+    width: 400px;
+}
+
+.item-details{
+    width: 600px;
+    padding-top:50px;
+}
+
+.size-grid{
+
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto;
+    justify-content: center;
+    font-size: 15px;
+    margin-top: 20px;
+
+}
+
+.size-style{
+    border: 1px solid #708090;
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    text-align: center;
+    margin: 5px;
+    cursor: pointer;
+    padding: 2px;
+}
+
+
+.btn-css{
+    margin: 15px;
+    width: 400px;
+    display: inline-block;
+    outline: 0;
+    border: 0;
+    cursor: pointer;
+    will-change: box-shadow,transform;
+    background: radial-gradient( 100% 100% at 100% 0%, #89E5FF 0%, #5468FF 100% );
+    box-shadow: 0px 2px 4px rgb(45 35 66 / 40%), 0px 7px 13px -3px rgb(45 35 66 / 30%), inset 0px -3px 0px rgb(58 65 111 / 50%);
+    padding: 0 32px;
+    border-radius: 6px;
+    color: #fff;
+    height: 48px;
+    font-size: 18px;
+    text-shadow: 0 1px 0 rgb(0 0 0 / 40%);
+    transition: box-shadow 0.15s ease,transform 0.15s ease;
+    :hover {
+        box-shadow: 0px 4px 8px rgb(45 35 66 / 40%), 0px 7px 13px -3px rgb(45 35 66 / 30%), inset 0px -3px 0px #3c4fe0;
+        transform: translateY(-2px);
+    }
+    :active{
+        box-shadow: inset 0px 3px 7px #3c4fe0;
+        transform: translateY(2px);
+    }
+    
+}
+
+.size-style:hover{
+    background-color: black;
+    color: white;
+}
+
+.alert {
+    display: none;
+    width: 400px;
+    height: auto;
+    padding: 10px;
+    margin: 10px;
+    line-height: 1.8;
+    border-radius: 5px;
+    cursor: hand;
+    cursor: pointer;
+    font-family: sans-serif;
+    font-weight: 400;
+    background-color: rgb(167, 90, 90);
+    border: 1px solid red;
+    color: white;
+    margin: auto;
+    position: absolute;
+    top: 11%;
+    left: 35%;
+    z-index: 1;
+  }
+  .alertText {
+    display: table;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 16px;
+  }
+  
+  .alertClose {
+    float: right;
+    padding-top: 5px;
+    font-size: 15px;
+  }
+  

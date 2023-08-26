@@ -1,0 +1,287 @@
+import { useContext, useEffect, useState } from "react";
+import "../css/cart.css";
+import "../css/general.css";
+import "../css/view-item.css";
+import { UserContext } from "../App";
+import properties from "../properties/properties.json";
+import { useNavigate } from "react-router-dom";
+
+function Cart(){
+
+    const {logged,cartCount,setCartCount,credential}=useContext(UserContext);
+    const [shoppingCart,setShoppingCart]=useState({});
+    const [subtotal,setSubTotal]=useState(0);
+    const navigate=useNavigate();
+    useEffect(()=>{
+        if(logged){
+            fetch(properties.remoteServer+"/auth/api/carts",{
+                method:"GET",
+                credentials: "include",
+                headers: {
+                  'csrfToken':credential
+                }
+                }).then(
+                (stream)=>stream.json()
+                ).then(
+                (json)=>{
+                      if(json.status===2000){
+                        let subtotal=0;
+                        for(let i=0;i<json.content.length;i++){
+                            shoppingCart["key:"+json.content[i].inventory.inventoryId]=json.content[i].inventory;
+                            shoppingCart["key:"+json.content[i].inventory.inventoryId].count=json.content[i].count;
+                            subtotal=subtotal+json.content[i].inventory.variant.price*json.content[i].count;
+                        }
+                        setShoppingCart(shoppingCart);
+                        setSubTotal(subtotal);
+                      }
+                })
+        }else{
+            let inventories=[];
+            let cart=localStorage.getItem("cart");
+            if(cart!==null || cart!==undefined){
+                cart=JSON.parse(cart);
+                for(let key in cart){
+                    inventories.push({inventoryId:cart[key].inventoryId});
+                }
+
+                if(inventories.length>0){
+                    fetch(properties.remoteServer+"/public/api/carts/_local",{
+                        credentials: "include",
+                        method:"POST",
+                        body:JSON.stringify(inventories),
+                        headers: {
+                            'Content-Type': 
+                            'application/json;charset=utf-8'
+                        }
+                    }).then(res=>res.json()).then(json=>{
+                        if(json.status===2000){
+                            let subtotal=0;
+                            let localCartCopy={...cart};
+                            let reverseCart={};
+                            let inventoryIdSet=new Set([]);
+                            let totalCartCount=0;
+                            let deductCount=0;
+                            for(let i=0;i<json.content.length;i++){
+                                let cartItem=localCartCopy["key:"+json.content[i].inventoryId];
+                                cartItem.size=json.content[i].size;
+                                cartItem.variant=json.content[i].variant;
+                                cartItem.availableStocks=json.content[i].availableStocks;
+                                subtotal=subtotal+json.content[i].variant.price*cartItem.count;
+                                inventoryIdSet.add("key:"+json.content[i].inventoryId);
+                            }
+
+                            Object.keys(localCartCopy).reverse().forEach(key=>{
+                                totalCartCount+=cart[key].count;;
+                                if(!inventoryIdSet.has(key)){
+                                      deductCount+=cart[key].count;
+                                      delete cart[key];
+                                }else{
+                                    reverseCart[key]=localCartCopy[key];
+                                }
+                            })
+                           
+                            if(json.content.length>0){
+                                setShoppingCart(reverseCart);
+                                setSubTotal(subtotal);
+                            }
+
+                            localStorage.setItem("cart",JSON.stringify(cart));
+                            setCartCount(totalCartCount-deductCount);
+
+                        }
+                    })
+                }
+            }
+        }
+
+    },[logged])
+
+    function addToCart(key){
+        if(cartCount>=50){
+            showAlertNotice("Cannot add more than 50 items in cart!",1);
+            return;
+        }
+
+        if(logged){
+            let cart={
+                inventory:{inventoryId:key.split(":")[1]}
+            }
+
+            fetch(properties.remoteServer+"/auth/api/carts",{
+                method:"POST",
+                body:JSON.stringify(cart),
+                credentials: "include",
+                headers: {
+                'Content-Type': 
+                'application/json;charset=utf-8',
+                'csrfToken':credential
+                }
+                }).then(
+                (stream)=>stream.json()
+                ).then(
+                (json)=>{
+                      if(json.status===2000){
+                         let item=shoppingCart[key];
+                         item["count"]=item.count+1;
+                         setShoppingCart(shoppingCart);
+                         setCartCount(cartCount+1);
+                         setSubTotal(subtotal+item.variant.price)
+                      }else if(json.status===4000){
+                         showAlertNotice(json.message,1);
+                      }
+                })
+
+        }else{
+           let item=shoppingCart[key];
+           let cart=JSON.parse(localStorage.getItem("cart"));
+           if((item.count+1)>item.availableStocks){
+                showAlertNotice("No items left!",1);
+                return;
+           }
+           item["count"]=item.count+1;
+           cart[key]["count"]= cart[key].count+1;
+           setShoppingCart(shoppingCart);
+           localStorage.setItem("cart",JSON.stringify(cart));
+           setCartCount(cartCount+1);
+           setSubTotal(subtotal+item.variant.price)
+        }
+    }
+
+    function removeFromCart(key){
+        if(cartCount<=0){
+            return;
+        }
+
+        if(logged){
+            let cart={
+                inventory:{inventoryId:key.split(":")[1]}
+            }
+
+            fetch(properties.remoteServer+"/auth/api/carts",{
+                method:"DELETE",
+                body:JSON.stringify(cart),
+                credentials: "include",
+                headers: {
+                'Content-Type': 
+                'application/json;charset=utf-8',
+                'csrfToken':credential
+                }
+                }).then(
+                (stream)=>stream.json()
+                ).then(
+                (json)=>{
+                      if(json.status===2000){
+                        let item=shoppingCart[key];
+                        item["count"]=item.count-1;
+                        if(item.count<=0){
+                            delete shoppingCart[key];
+                        }
+                        setShoppingCart(shoppingCart);
+                        setCartCount(cartCount-1);
+                        setSubTotal(subtotal-item.variant.price)
+                      }else if(json.status===4000){
+                         showAlertNotice(json.message,1);
+                      }else if(json.status===4001){
+                         navigate("/");
+                      }
+                })
+
+        }else{
+           let item=shoppingCart[key];
+           let cart=JSON.parse(localStorage.getItem("cart"));
+           item["count"]=item.count-1;
+           cart[key]["count"]= cart[key].count-1;
+           if(item.count<=0){
+                 delete shoppingCart[key];
+                 delete cart[key];
+           }
+           setShoppingCart(shoppingCart);
+           localStorage.setItem("cart",JSON.stringify(cart));
+           setCartCount(cartCount-1);
+           setSubTotal(subtotal-item.variant.price);
+        }
+    }
+
+    function showAlertNotice(message,signal){
+        const alertBox=document.getElementById("cart-alert-notice");
+        alertBox.style.display="block";
+        document.getElementById("alert-text").innerText=message;
+        if(signal===0){
+            alertBox.style.backgroundColor="lightgreen";
+            alertBox.style.border="1px solid green";
+        }else if(signal===1){
+            alertBox.style.backgroundColor="rgb(167, 90, 90)";
+            alertBox.style.border="1px solid red";
+        }
+    }
+    function closeAlertNotice(){
+        document.getElementById("cart-alert-notice").style.display="none";
+    }
+
+    function goTocheckoutPage(){
+        //need to check
+        let cart=[];
+        for(let key in shoppingCart){
+            if(shoppingCart[key].count>shoppingCart[key].availableStocks){
+                showAlertNotice("Please check item availability!",1);
+                return;
+            }
+            cart.push(shoppingCart[key]);
+        }
+        navigate("/checkout?items="+encodeURIComponent(JSON.stringify(cart)));
+    }
+
+
+    function renderCartItems(){
+        if(shoppingCart!==undefined){
+            return Object.keys(shoppingCart).map(key=>{
+                
+                return (
+                    <div className="cart-item-style" key={key}>
+                        <div>
+                            <img className="cart-item-img-style" alt="item-img" src={shoppingCart[key].variant.images[0].url}/>
+                        </div>
+                        <div className="cart-item-details-style">
+                                <div style={{textAlign:"center",fontFamily:"fantasy",color:"#C0C0C0",fontSize:20}}>{shoppingCart[key].variant.item.productItemName}</div>
+                                <div style={{textAlign:"center",fontFamily:"fantasy",color:"#BC8F8F",fontSize:20,letterSpacing:3}}>{shoppingCart[key].variant.name}</div>
+                                <div style={{textAlign:"center",fontFamily:"fantasy",color:"#708090",fontSize:20}}>Price : ₹{shoppingCart[key].variant.price}</div>
+                                <div style={{textAlign:"center",fontFamily:"fantasy",color:"#708090",fontSize:20}}>Size : {shoppingCart[key].size.name}</div>
+                                <div  style={{textAlign:"center",fontFamily:"sans-serif",color:"green",fontSize:15}}>Available:{shoppingCart[key].availableStocks}</div>
+                        </div>
+                        <div style={{display:"flex",alignItems:"center"}}>
+                              <div className="cart-item-count-handler" onClick={()=>{removeFromCart(key)}}>-</div>
+                              <div className="cart-item-count">{shoppingCart[key].count}</div>
+                              <div className="cart-item-count-handler" onClick={()=>{addToCart(key)}}>+</div>
+                        </div>
+                        <div style={{display:"flex",alignItems:"center"}}>
+                             Total : ₹{shoppingCart[key].count*shoppingCart[key].variant.price}
+                        </div>
+                    </div>
+                )
+            })
+        }
+    }
+
+    return(
+        <>
+        <div style={{textAlign:"center",padding:5,fontSize:20,color:"#2F4F4F"}}>Shopping Cart</div>
+        <div className="alert" id="cart-alert-notice">
+                                <span className="alertClose" onClick={closeAlertNotice}>X</span>
+                                <span className="alertText" id="alert-text">Notice!
+                                <br className="clear"/></span>
+        </div>
+        <div className="cart-container">
+           <div className="cart-item-container">
+                 {renderCartItems()}
+           </div>
+           <div className="cart-buy-container">
+                <div style={{textAlign:"center",fontSize:20,letterSpacing:3,color:"green",margin:15}}>Order Now!</div>
+                <div style={{textAlign:"center",fontSize:15,letterSpacing:2,color:"#2F4F4F"}}>Subtotal({Object.keys(shoppingCart).length}) : ₹{subtotal}</div>
+                <div style={{textAlign:"center",fontSize:15,letterSpacing:3,margin:15}}><input className="general-usr-btn-style" type="button" onClick={goTocheckoutPage} value={"Proceed to Buy"}/></div>
+           </div>
+        </div>
+        </>
+    )
+}
+
+export default Cart;

@@ -1,0 +1,42 @@
+.account-container{
+    margin: 20px;
+    border: 1px solid silver;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+.account-container-row{
+    height: 70px;
+    border-bottom: 1px solid silver;
+    display: grid;
+    grid-template-columns:repeat(3, 1fr) ;
+    grid-column-gap:10px;
+}
+
+.account-container-col{
+    display: flex;
+    align-items: center;
+    word-break: break-all;
+}
+
+.account-container-col-btn{
+   
+    border: 1px solid black;
+    padding: 5px;
+    background-color: white;
+    width: 70px;
+    border-radius: 5px;
+}
+
+@media (max-width:500px) {
+
+    .account-container{
+        margin: 5px;
+    }
+
+    .account-container-row{
+        height: 100px;
+    }
+
+
+}

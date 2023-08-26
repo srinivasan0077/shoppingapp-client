@@ -1,0 +1,25 @@
+.general-usr-btn-style{
+    background-color: #3c4fe0;
+    color: white;
+    border: 1px solid blue;
+    border-radius: 3px;
+    padding: 5px;
+    width:200px ;
+}
+
+.general-usr-btn-style:hover{
+    background-color: #757fca;
+}
+
+.general-maroon-btn-style{
+    background-color: maroon;
+    color: white;
+    border: 1px solid maroon;
+    border-radius: 3px;
+}
+
+
+.center-the-item{
+    display: flex;
+    justify-content: center;
+}

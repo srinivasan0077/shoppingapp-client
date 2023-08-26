@@ -1,0 +1,58 @@
+/*Include general css here*/
+
+.link-style{
+    text-decoration: none;
+    color: maroon;
+    padding: 5px;
+}
+
+.link-style:hover{
+    color: rgb(164, 96, 96);
+}
+
+.container-align-center{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.general-container{
+    border: 1px solid silver;
+    width: 350px;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+.general-heading{
+    font-size: 20px;
+    color: maroon;
+}
+
+.general-btn-style{
+    background-color: rgb(208, 122, 122);
+    color: white;
+    border: 1px solid maroon;
+    border-radius: 3px;
+    margin-top: 10px;
+}
+
+.general-btn-style:hover{
+    border: 1px solid rgb(157, 100, 100);
+    background-color: rgb(157, 100, 100);
+}
+
+.general-input-name{
+    color: maroon;
+}
+
+.result-container{
+    display: none;
+    width: 350px;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 10px;
+}
+
+.general-select-style{
+    width:200px;
+}

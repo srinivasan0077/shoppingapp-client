@@ -1,0 +1,4 @@
+{
+    "remoteServer":"http://localhost:8080",
+    "aws-server":"http://royall.ap-south-1.elasticbeanstalk.com"
+}

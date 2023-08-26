@@ -1,0 +1,221 @@
+.header-div{
+    height: 80px;
+    border: 1px solid silver;
+    background-color: white;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    min-width: 1000px;
+    position: sticky; 
+    top: 0;
+    width: 100%;
+    z-index: 2;
+}
+
+.header-container{
+    padding-left: 40px;
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    color: rgb(151, 84, 84);
+}
+
+.mobile-search-container{
+    display: none;
+}
+
+
+.image-container{
+         grid-column: 1/1;
+         display: flex;
+         align-items: center;
+}
+
+.site-name-style{
+    color:"maroon";
+    font-family:"fantasy";
+    font-size:30px;
+}
+
+.fabar-class{
+     display: none;
+}
+
+.tab-container{
+    display: flex;
+    align-items: center;
+}
+
+.tab{
+    margin: 10px;
+    cursor: pointer;
+    letter-spacing: 2px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.tab:hover{
+    color: rgb(149, 92, 92);
+}
+
+
+.search-container{
+    display: flex;
+    align-items: center;
+}
+
+.search-field{
+    height: 40px;
+}
+
+.button-style{
+    background-color: maroon;
+    height: 40px;
+    border: 1px solid maroon;
+    border-radius: 5px;
+    padding: 0px 15px 0px 15px;
+    color: white;
+}
+
+.bag-container-style{
+    display: flex;
+    border: 1px solid maroon;
+    border-radius: 5px;
+    background-color:maroon;
+    color: white;
+    height: 38px;
+    margin-left:10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.bag-container-style:hover{
+    background-color:rgb(165, 60, 60);
+}
+
+.bag-style{
+    font-size:20px;
+ }
+
+
+.account-div{
+    position: relative;
+    display: inline-block;
+}
+
+.account-dropdown-content{
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.account-dropdown-content div {
+    padding: 12px 16px;
+    display: block;
+    cursor: pointer;
+    color: maroon;
+  }
+
+.account-dropdown-content div:hover {
+    background-color: #ddd;
+}
+
+.account-div:hover .account-dropdown-content {
+    display: block;
+ }
+
+
+.user-signin{
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+
+.sidenav-container{
+    display: none;
+}
+
+.sidenav{
+    width: 200px;
+    position: absolute;
+    top:0;
+    left:0;
+    height: 100vh;
+    background-color: maroon;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    padding-top: 20px;
+}
+
+.sidenav div{
+    padding: 12px 16px;
+}
+
+.sidenav div:hover{
+    background-color:rgb(173, 106, 106);
+}
+
+
+@media (max-width:500px) {
+
+    .header-div{
+        height: 130px;
+        min-width: 300px;
+    }
+   
+    .tab-container{
+        display: none;
+    }
+
+     .site-name-style{
+        font-size:25px;
+        margin-left: 10px;
+        margin-top: 5px;
+    }
+
+    .fabar-class{
+        display: block;
+        font-size: 25px;
+        cursor: pointer;
+   }
+
+   .header-container{
+        padding-left: 10px;
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .mobile-search-container{
+        display: block;
+        display: flex;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    
+    .search-container{
+        display: none;
+    }
+     
+
+    .bag-container-style{
+        border-radius: 5px;
+        color: white;
+        margin-left:10px;
+        padding: 2px;
+        padding-left: 4px;
+        padding-right: 4px;
+        font-size: 15px;
+    }
+
+    .account-dropdown-content{
+        left: -50px;
+        min-width: 100px;
+    }
+
+    .account-dropdown-content div {
+        padding: 5px 5px;
+        
+      }
+
+}

@@ -1,0 +1,21 @@
+
+.banner-container{
+    min-width: 1000px;
+}
+
+.banner-img-style{
+    width:100%;
+    height: 500px;
+}
+
+@media (max-width:500px) {
+
+    .banner-container{
+        min-width: 300px;
+    }
+
+    .banner-img-style{
+        width:100%;
+        height: 250px;
+    }
+}
