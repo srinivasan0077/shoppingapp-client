@@ -19,6 +19,42 @@
     padding-top:50px;
 }
 
+.view-item-name{
+    text-align:center;
+    font-family:fantasy;
+    color:#C0C0C0;
+    font-size:20px
+}
+
+.view-variant-name{
+    text-align:center;
+    font-family:fantasy;
+    color:#BC8F8F;
+    font-size:25px;
+    letter-spacing: 3px;
+}
+
+.view-variant-price{
+    text-align:center;
+    font-family:fantasy;
+    color:#708090;
+    margin-top: 20px;
+    font-size:20px
+}
+
+.view-variant-available{
+    text-align:center;
+    font-family:sans-serif;
+    color:green;
+    font-size:15px;
+}
+
+.view-variant-similar{
+    font-size: 30px;
+    color: maroon;
+    text-align: center;
+}
+
 .size-grid{
 
     display: grid;
@@ -108,3 +144,74 @@
     font-size: 15px;
   }
   
+  @media (max-width:500px) {
+    .item-view{
+        margin:10px;
+    }
+
+    .item-component{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .img-view{
+        height: 250px;
+        width: 250px;
+    }
+
+    .item-details{
+        padding-top: 0px;
+        width: auto;
+    }
+
+    .view-item-name{
+        font-size: 15px;
+    }
+
+    .view-variant-name{
+        font-size: 15px;
+    }
+
+    .view-variant-price{
+        font-size: 15px;
+        margin-top: 0px;
+    }
+
+    .view-variant-available{
+            font-size: 10px;
+    }
+
+    .view-variant-similar{
+        font-size: 20px;
+    }
+
+    .size-grid{
+        margin-top: 0px; 
+    }
+    
+    .size-style{
+        border: 1px solid #708090;
+        border-radius: 50%;
+        height: 30px;
+        width: 30px;
+        text-align: center;
+        margin: 5px;
+        cursor: pointer;
+        padding: 2px;
+    }
+
+    .btn-css{
+        width:300px;
+        margin: 5px;
+        height: 30px;
+    }
+
+    .alert {
+       width: 200px;
+       top: 20%;
+       left: 28%;
+       font-weight: 200;
+       padding: 5px;
+    }
+  }

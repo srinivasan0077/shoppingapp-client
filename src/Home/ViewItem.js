@@ -105,13 +105,13 @@ function ViewItem(){
                 <div className="item-component">
                     <img className="img-view" alt="boximg-view-img" src={variant.images[0].url}/>
                     <div className="item-details">
-                        <div style={{textAlign:"center",fontFamily:"fantasy",color:"#C0C0C0",fontSize:20}}>{variant.item.productItemName}</div>
-                        <div style={{textAlign:"center",fontFamily:"fantasy",color:"#BC8F8F",fontSize:25,letterSpacing:3}}>{variant.name}</div>
-                        <div style={{textAlign:"center",fontFamily:"fantasy",color:"#708090",fontSize:20,marginTop:20}}>Price:₹{variant.price}</div>
+                        <div className="view-item-name">{variant.item.productItemName}</div>
+                        <div className="view-variant-name">{variant.name}</div>
+                        <div className="view-variant-price">Price:₹{variant.price}</div>
                         <div className="size-grid">
                               {renderSizes()}
                         </div>
-                        <div  style={{textAlign:"center",fontFamily:"sans-serif",color:"green",fontSize:15}}>{inventory!==undefined?"AVAILABLE:"+inventory.availableStocks:""}</div>
+                        <div className="view-variant-available">{inventory!==undefined?"AVAILABLE:"+inventory.availableStocks:""}</div>
                         <div style={{display:"flex",justifyContent:"center",alignItems:"center",margin:10}}>
                               <div className="cart-item-count-handler"  onClick={()=>{modifyCount("sub")}}>-</div>
                               <div className="cart-item-count">{stocks}</div>
@@ -234,8 +234,9 @@ function ViewItem(){
             <div className="item-view">
                 {renderComponents()}
             </div>
-            <div style={{marginTop:10}}>
-                    <div style={{fontSize:30,color:"maroon",textAlign: "center"}}>{(svariants!==undefined && svariants.length>1)?"Similar Items":""}</div>
+            <hr/>
+            <div style={{marginTop:20}}>
+                    <div className="view-variant-similar">{(svariants!==undefined && svariants.length>1)?"Similar Items":""}</div>
 
                     <div className="grid-container">
                             {renderSimilarVariants()}
