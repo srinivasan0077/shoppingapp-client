@@ -276,9 +276,9 @@ function Checkout(){
                  
                 </div>
                 <div className="cart-buy-container">
-                        <div style={{textAlign:"center",fontSize:20,letterSpacing:3,color:"green",margin:15}}>Pay Now!</div>
+                        <div className="cart-buy-container-heading">Pay Now!</div>
                         <div style={{textAlign:"center",fontSize:15,letterSpacing:2,color:"#2F4F4F"}}>Subtotal : {subTotal}</div>
-                        <div style={{textAlign:"center",fontSize:15,letterSpacing:3,margin:15}}><input className="general-usr-btn-style" id="place-order-button" type="button" value={"Proceed to Pay"} onClick={placeOrderAndGotoPaymentPage}/></div>
+                        <div style={{textAlign:"center",fontSize:15,letterSpacing:3,margin:10}}><input className="general-usr-btn-style" id="place-order-button" type="button" value={"Proceed to Pay"} onClick={placeOrderAndGotoPaymentPage}/></div>
                 </div>
         </div>
         </>
