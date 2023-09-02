@@ -46,7 +46,7 @@ scrollbar-width: none;  /* Firefox */
     }
 
     .grid-container {
-        margin: 30px;
+        margin: 15px;
         grid-template-columns: repeat(2, 1fr);
         min-width: 300px;
     }

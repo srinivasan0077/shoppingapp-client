@@ -51,7 +51,7 @@
 @media (max-width:500px) {
     .box-container{
         height: 260px;
-        width: 160px;
+        width: 170px;
         border: 1px solid silver;
         border-radius: 10px;
         cursor: pointer;
@@ -62,7 +62,7 @@
     }
 
     .font-style-variant{
-        font-size: 10px;
+        font-size: 12px;
     }
 
 }

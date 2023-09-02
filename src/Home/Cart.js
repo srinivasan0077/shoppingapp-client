@@ -242,13 +242,13 @@ function Cart(){
                             <img className="cart-item-img-style" alt="item-img" src={shoppingCart[key].variant.images[0].url}/>
                         </div>
                         <div className="cart-item-details-style">
-                                <div style={{textAlign:"center",fontFamily:"fantasy",color:"#C0C0C0",fontSize:20}}>{shoppingCart[key].variant.item.productItemName}</div>
-                                <div style={{textAlign:"center",fontFamily:"fantasy",color:"#BC8F8F",fontSize:20,letterSpacing:3}}>{shoppingCart[key].variant.name}</div>
-                                <div style={{textAlign:"center",fontFamily:"fantasy",color:"#708090",fontSize:20}}>Price : ₹{shoppingCart[key].variant.price}</div>
-                                <div style={{textAlign:"center",fontFamily:"fantasy",color:"#708090",fontSize:20}}>Size : {shoppingCart[key].size.name}</div>
-                                <div  style={{textAlign:"center",fontFamily:"sans-serif",color:"green",fontSize:15}}>Available:{shoppingCart[key].availableStocks}</div>
+                                <div className="cart-item-detail" style={{color:"#C0C0C0"}}>{shoppingCart[key].variant.item.productItemName}</div>
+                                <div className="cart-item-detail" style={{color:"#BC8F8F"}}>{shoppingCart[key].variant.name}</div>
+                                <div className="cart-item-detail" style={{color:"#708090"}}>Price : ₹{shoppingCart[key].variant.price}</div>
+                                <div className="cart-item-detail" style={{color:"#708090"}}>Size : {shoppingCart[key].size.name}</div>
+                                <div className="cart-item-detail" style={{color:"green"}}>Available:{shoppingCart[key].availableStocks}</div>
                         </div>
-                        <div style={{display:"flex",alignItems:"center"}}>
+                        <div className="cart-item-count-container">
                               <div className="cart-item-count-handler" onClick={()=>{removeFromCart(key)}}>-</div>
                               <div className="cart-item-count">{shoppingCart[key].count}</div>
                               <div className="cart-item-count-handler" onClick={()=>{addToCart(key)}}>+</div>
@@ -275,9 +275,9 @@ function Cart(){
                  {renderCartItems()}
            </div>
            <div className="cart-buy-container">
-                <div style={{textAlign:"center",fontSize:20,letterSpacing:3,color:"green",margin:15}}>Order Now!</div>
-                <div style={{textAlign:"center",fontSize:15,letterSpacing:2,color:"#2F4F4F"}}>Subtotal({Object.keys(shoppingCart).length}) : ₹{subtotal}</div>
-                <div style={{textAlign:"center",fontSize:15,letterSpacing:3,margin:15}}><input className="general-usr-btn-style" type="button" onClick={goTocheckoutPage} value={"Proceed to Buy"}/></div>
+                <div className="cart-buy-container-heading">Order Now!</div>
+                <div style={{textAlign:"center",fontSize:15,letterSpacing:2,color:"#2F4F4F"}}>Subtotal({cartCount}) : ₹{subtotal}</div>
+                <div style={{textAlign:"center",fontSize:15,letterSpacing:3,margin:10}}><input className="general-usr-btn-style" type="button" onClick={goTocheckoutPage} value={"Proceed to Buy"}/></div>
            </div>
         </div>
         </>
