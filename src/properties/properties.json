@@ -1,4 +1,4 @@
 {
-    "remoteServer":"http://localhost:8080",
+    "remoteServer":"https://api.royall.in",
     "httpsserver":"https://api.royall.in"
 }
