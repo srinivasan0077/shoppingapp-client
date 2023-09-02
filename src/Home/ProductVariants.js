@@ -119,7 +119,7 @@ function ProductVariants(){
                                             )
                                 })}
                             </div>
-                            <div className="center-the-item">
+                            <div className="center-the-item" style={{margin:20}}>
                                <button onClick={loadMore} className="general-maroon-btn-style">Load More</button>
                             </div>
                       

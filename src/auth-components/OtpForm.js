@@ -116,6 +116,15 @@ function OtpForm(){
         return true;
     }
 
+    function handleKeyInput(e){
+        if(e.key==='Enter'){
+            const otpvalidateBtn=document.getElementById("otpvalidate-btn");
+            if(otpvalidateBtn!==undefined){
+                otpvalidateBtn.click();
+            }
+        }
+    }
+
     return (
         <div className="login-body">
              <div className="login-result-container">
@@ -127,7 +136,7 @@ function OtpForm(){
                     <div className="login-heading">OTP Validation</div>
                         <div className="input-container">
                             <div className="input-name">Enter OTP</div>
-                            <input className="form-control" type={"number"} name="otp" value={state.otp} onChange={handleChange}/>
+                            <input className="form-control" type={"number"} name="otp" value={state.otp} onChange={handleChange} onKeyDown={handleKeyInput}/>
                         </div>
                         <div className="button-container">
                             <input type={"button"} onClick={handleSubmit} id="otpvalidate-btn" className="input-button" value="Submit"/>

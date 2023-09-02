@@ -41,6 +41,11 @@ import Checkout from './Home/Checkout';
 import Account from './Home/Account';
 import EditAccount from './Home/EditAccount';
 import NotFound from './auth-components/NotFound';
+import Support from './Home/Support';
+import Conditions from './Home/Conditions';
+import Privacy from './Home/Privacy';
+import Refund from './Home/Refund';
+import Shipping from './Home/Shipping';
 
 
 const UserContext=createContext();
@@ -62,7 +67,8 @@ function App() {
     credential:credential,
     setCredential:setCredential,
     cartCount:cartCount,
-    setCartCount:setCartCount
+    setCartCount:setCartCount,
+    scroll:scrollToRef
   }
 
   useEffect(()=>{
@@ -161,6 +167,11 @@ function App() {
               <Route path="checkout"  element={<Checkout/>}/>
               <Route path="my-account"  element={<Account/>}/>
               <Route path="edit-account"  element={<EditAccount/>}/>
+              <Route path="customer-care"  element={<Support/>}/>
+              <Route path="terms&conditions"  element={<Conditions/>}/>
+              <Route path="privacy-policy"  element={<Privacy/>}/>
+              <Route path="refund-policy"  element={<Refund/>}/>
+              <Route path="shipping-policy"  element={<Shipping/>}/>
             </Route>
             <Route path='*' element={<NotFound/>}/>
           </Routes>

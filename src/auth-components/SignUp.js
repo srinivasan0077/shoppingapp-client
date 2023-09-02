@@ -120,6 +120,15 @@ function SignUpPage(){
         setState({...state});
     }
 
+    function handleKeyInput(e){
+        if(e.key==='Enter'){
+            const signupBtn=document.getElementById("signup-btn");
+            if(signupBtn!==undefined){
+                signupBtn.click();
+            }
+        }
+    }
+
     return (
         <div className="login-body">
         <div className="login-result-container">
@@ -130,15 +139,15 @@ function SignUpPage(){
                 <div className="login-heading">Sign up</div>
                 <div className="input-container">
                     <div className="input-name">First Name</div>
-                    <input className="form-control" type={"text"} name="firstname" value={state.firstname} onChange={handleChange}/>
+                    <input className="form-control" type={"text"} name="firstname" value={state.firstname} onChange={handleChange} onKeyDown={handleKeyInput}/>
                 </div>
                 <div className="input-container">
                     <div className="input-name">Last Name</div>
-                    <input className="form-control" type={"text"} name="lastname" value={state.lastname} onChange={handleChange}/>
+                    <input className="form-control" type={"text"} name="lastname" value={state.lastname} onChange={handleChange} onKeyDown={handleKeyInput}/>
                 </div>
                 <div className="input-container">
                     <div className="input-name">Email</div>
-                    <input className="form-control" type={"email"} name="email" value={state.email} onChange={handleChange}/>
+                    <input className="form-control" type={"email"} name="email" value={state.email} onChange={handleChange} onKeyDown={handleKeyInput}/>
                 </div>
                {/**<div className="input-container">
                     <div className="input-name">Gender</div>
@@ -149,11 +158,11 @@ function SignUpPage(){
                </div>**/}
                 <div className="input-container">
                     <div className="input-name">Password</div>
-                    <input className="form-control" type={"password"} name="password" value={state.password} onChange={handleChange}/>
+                    <input className="form-control" type={"password"} name="password" value={state.password} onChange={handleChange} onKeyDown={handleKeyInput}/>
                 </div>
                 <div className="input-container">
                     <div className="input-name">Confirm Password</div>
-                    <input className="form-control" type={"password"} name="confirmpw" value={state.confirmpw} onChange={handleChange}/>
+                    <input className="form-control" type={"password"} name="confirmpw" value={state.confirmpw} onChange={handleChange} onKeyDown={handleKeyInput}/>
                 </div>
                 <div className="button-container">
                     <input type={"button"} onClick={handleSignUp} id="signup-btn" className="input-button" value="Sign up"/>

@@ -17,7 +17,7 @@ function Checkout(){
     const cart=useRef([]);
     const [savedAddress,setSavedAddress]=useState([]);
     const pickedAddress=useRef(undefined);
-    const {logged,credential}=useContext(UserContext);
+    const {logged,credential,scroll}=useContext(UserContext);
     const [queryParameters] = useSearchParams();
     const items=queryParameters.get("items");
     const [subTotal,setSubTotal]=useState(0);
@@ -122,6 +122,9 @@ function Checkout(){
         resultContent.style.color="red";
         resultContainer.style.border="1px solid red";
         resultContainer.style.display="block";
+        if(scroll.current!==undefined){
+            scroll.current.scrollIntoView();
+         }
     }
 
     function validate(field){
@@ -206,6 +209,15 @@ function Checkout(){
          )
     }
 
+    function handleKeyInput(e){
+        if(e.key==='Enter'){
+            const placeOrderBtn=document.getElementById("place-order-button");
+            if(placeOrderBtn!==undefined){
+                placeOrderBtn.click();
+            }
+        }
+    }
+
     function renderComponent(){
         if(!newAddressForm){
             return (                 
@@ -226,20 +238,20 @@ function Checkout(){
                     <div style={{padding:5,fontSize:20,color:"#2F4F4F"}}>Delivery Address</div>
                     <div className="input-container">
                         <div className="input-name">Address Line 1</div>
-                        <input className="form-control" type={"text"} name="addressLine1" onChange={handleChange}/>
+                        <input className="form-control" type={"text"} name="addressLine1" onChange={handleChange} onKeyDown={handleKeyInput}/>
                     </div>
                     <div className="input-container">
                         <div className="input-name">Address Line 2</div>
-                        <input className="form-control" type={"text"} name="addressLine2" onChange={handleChange}/>
+                        <input className="form-control" type={"text"} name="addressLine2" onChange={handleChange} onKeyDown={handleKeyInput}/>
                     </div>
                     <div className="input-same-line">
                         <div className="input-container input-checkout-style">
                             <div className="input-name">City</div>
-                            <input className="form-control" type={"text"} name="city" onChange={handleChange}/>
+                            <input className="form-control" type={"text"} name="city" onChange={handleChange} onKeyDown={handleKeyInput}/>
                         </div>
                         <div className="input-container input-checkout-style">
                             <div className="input-name">State</div>
-                            <input className="form-control" type={"text"} name="state" onChange={handleChange}/>
+                            <input className="form-control" type={"text"} name="state" onChange={handleChange} onKeyDown={handleKeyInput}/>
                         </div>
                     </div>
                     <div className="input-same-line">
@@ -249,13 +261,13 @@ function Checkout(){
                         </div>
                         <div className="input-container input-checkout-style">
                             <div className="input-name">Postal Code</div>
-                            <input className="form-control" type={"number"} name="postalCode" onChange={handleChange}/>
+                            <input className="form-control" type={"number"} name="postalCode" onChange={handleChange} onKeyDown={handleKeyInput}/>
                         </div>
                     </div>
                     <div className="input-same-line">
                         <div className="input-container input-checkout-style">
                             <div className="input-name">Phone</div>
-                            <input className="form-control" type={"number"} name="mobile" onChange={handleChange}/>
+                            <input className="form-control" type={"number"} name="mobile" onChange={handleChange} onKeyDown={handleKeyInput}/>
                         </div>
                     </div>
 

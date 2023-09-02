@@ -38,7 +38,6 @@ function LoginPage(){
             'application/json;charset=utf-8'
             }
           }).then(res=>res.json()).then(json=>{
-              console.log(json);
               if(json.status===2000){
                   setLogged(true);
                   let content=JSON.parse(json.content);
@@ -94,6 +93,15 @@ function LoginPage(){
         return true;
     }
 
+    function handleKeyInput(e){
+        if(e.key==='Enter'){
+            const loginBtn=document.getElementById("login-btn");
+            if(loginBtn!==undefined){
+                loginBtn.click();
+            }
+        }
+    }
+
     return (
         <div className="login-body">
             <div className="login-result-container">
@@ -104,11 +112,11 @@ function LoginPage(){
                     <div className="login-heading">Sign in</div>
                     <div className="input-container">
                         <div className="input-name">Email</div>
-                        <input className="form-control" type={"email"} name="email" value={state.email} onChange={handleChange}/>
+                        <input className="form-control" type={"email"} name="email" value={state.email} onChange={handleChange} onKeyDown={handleKeyInput}/>
                     </div>
                     <div className="input-container">
                         <div className="input-name">Password</div>
-                        <input className="form-control" type={"password"} name="password" value={state.password} onChange={handleChange}/>
+                        <input className="form-control" type={"password"} name="password" value={state.password} onChange={handleChange} onKeyDown={handleKeyInput}/>
                     </div>
                     <div className="button-container">
                         <input type={"button"} onClick={handleLogin} id="login-btn" className="input-button" value="Sign in"/>

@@ -88,6 +88,15 @@ function ChangePasswordForm(){
             return true;
     }
 
+    function handleKeyInput(e){
+        if(e.key==='Enter'){
+            const changepwBtn=document.getElementById("changepw-submit-btn");
+            if(changepwBtn!==undefined){
+                changepwBtn.click();
+            }
+        }
+    }
+
     return (
         <div className="login-body">
             <div className="login-result-container">
@@ -102,7 +111,7 @@ function ChangePasswordForm(){
                 </div>
                 <div className="input-container">
                     <div className="input-name">Confirm Password</div>
-                    <input className="form-control" type={"password"} name="confirmpw" value={state.confirmpw} onChange={handleChange}/>
+                    <input className="form-control" type={"password"} name="confirmpw" value={state.confirmpw} onChange={handleChange} onKeyDown={handleKeyInput}/>
                 </div>
                 <div className="button-container">
                     <input type={"button"} onClick={handleSubmit}  id="changepw-submit-btn" className="input-button" value="Submit"/>

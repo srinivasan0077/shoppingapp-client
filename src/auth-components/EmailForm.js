@@ -77,6 +77,15 @@ function EmailForm(){
         return true;
     }
 
+    function handleKeyInput(e){
+        if(e.key==='Enter'){
+            const sendotpBtn=document.getElementById("sendotp-btn");
+            if(sendotpBtn!==undefined){
+                sendotpBtn.click();
+            }
+        }
+    }
+
     return (
         <div className="login-body">
              <div className="login-result-container">
@@ -87,7 +96,7 @@ function EmailForm(){
                     <div className="login-heading">Forgot Password</div>
                     <div className="input-container">
                         <div className="input-name">Email</div>
-                        <input className="form-control" type={"email"} name="email" value={state.email} onChange={handleChange}/>
+                        <input className="form-control" type={"email"} name="email" value={state.email} onChange={handleChange} onKeyDown={handleKeyInput}/>
                     </div>
                     
                     <div className="button-container">

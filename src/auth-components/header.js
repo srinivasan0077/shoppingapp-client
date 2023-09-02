@@ -136,7 +136,7 @@ function Header(){
                 <div className="tab-container">
                     <div className="tab" onClick={()=>{navigate("/");}}>Home</div>
                     {renderHeaders(false)}
-                    <div className="tab">Service</div>
+                    <div className="tab" onClick={()=>{navigate("/customer-care")}}>Support</div>
                 </div>
                 <div className="search-container">
                    <input type={"search"} className="form-control search-field"  placeholder="Search" onKeyUp={handleKeyPress}/>

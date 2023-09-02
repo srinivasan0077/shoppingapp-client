@@ -16,6 +16,15 @@ function FormForOTP(props){
         setState({...state});
     }
 
+    function handleKeyInput(e){
+        if(e.key==='Enter'){
+            const otpvalidateBtn=document.getElementById("formotpvalidate-btn");
+            if(otpvalidateBtn!==undefined){
+                otpvalidateBtn.click();
+            }
+        }
+    }
+
     async function handleResendClick(){
         try{
             document.getElementById("resendotp-btn").disabled=true;
@@ -33,12 +42,12 @@ function FormForOTP(props){
         }
 
         try{
-            document.getElementById("otpvalidate-btn").disabled=true;
+            document.getElementById("formotpvalidate-btn").disabled=true;
             await handleSubmit(document.getElementById("spotpform-result-display"),document.getElementById("spotpform-result-content"));
         }catch(err){
             console.log(err);
         }finally{
-            document.getElementById("otpvalidate-btn").disabled=false;
+            document.getElementById("formotpvalidate-btn").disabled=false;
         }
     }
 
@@ -67,10 +76,10 @@ function FormForOTP(props){
                 <div className="login-heading">OTP Validation</div>
                 <div className="input-container">
                     <div className="input-name">Enter OTP</div>
-                    <input className="form-control" type={"number"} name="otp" value={state.otp} onChange={handleChange}/>
+                    <input className="form-control" type={"number"} name="otp" value={state.otp} onChange={handleChange} onKeyDown={handleKeyInput}/>
                 </div>
                 <div className="button-container">
-                    <input type={"button"} onClick={handleSubmitClick} id="otpvalidate-btn" className="input-button" value="Submit"/>
+                    <input type={"button"} onClick={handleSubmitClick} id="formotpvalidate-btn" className="input-button" value="Submit"/>
                 </div>
                 <div style={{display:"flex",fontSize:13,justifyContent:"center",padding:5}}>
                     <div>Not received your code?</div>

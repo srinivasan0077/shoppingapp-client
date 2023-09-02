@@ -1,0 +1,14 @@
+.support-container{
+    margin: 10px;
+    margin-top: 80px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid silver;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.support-container-child{
+    display: flex;
+    margin: 10px;
+}
