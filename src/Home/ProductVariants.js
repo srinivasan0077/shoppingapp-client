@@ -105,8 +105,8 @@ function ProductVariants(){
     return(
         
         <div className="home-page">
-           <div className="component-margin">
-                   <div style={{marginTop:10}}>
+           
+                   <div style={{marginTop:10,marginBottom:20}}>
                        
                             <div className="topic-style">{header.productName}</div>  
                            
@@ -121,7 +121,7 @@ function ProductVariants(){
                             </InfiniteScroll>
                       
                     </div>
-           </div>
+        
         </div>
         
     )
