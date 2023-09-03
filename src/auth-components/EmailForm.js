@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 
 function EmailForm(){
-    const {logged}=useContext(UserContext);
+    const {logged,scroll}=useContext(UserContext);
     const [state,setState]=useState({"email":""});
     const navigate=useNavigate();
     const whitespaceRegex=/\s/
@@ -36,16 +36,11 @@ function EmailForm(){
             'application/json;charset=utf-8'
             }
           }).then(res=>res.json()).then(json=>{
-              console.log(json);
+
               if(json.status===2000){
-                  navigate("/otpform",{email:state});
+                  navigate("/otpform?email="+state.email);
               }else{
-                let resultContainer=document.getElementById("fpform-result-display");
-                let resultContent=document.getElementById("fpform-result-content");
-                resultContent.innerText=json.message;
-                resultContent.style.color="red";
-                resultContainer.style.border="1px solid red";
-                resultContainer.style.display="block";
+                showValidationResult(json.message);
               }
           })
 
@@ -61,16 +56,22 @@ function EmailForm(){
         setState({...state});
     }
 
+    function showValidationResult(message){
+        let resultContainer=document.getElementById("fpform-result-display");
+        let resultContent=document.getElementById("fpform-result-content");
+        resultContent.innerText=message;
+        resultContent.style.color="red";
+        resultContainer.style.border="1px solid red";
+        resultContainer.style.display="block";
+        if(scroll.current!==undefined){
+            scroll.current.scrollIntoView();
+         }
+    }
+
     function validateFields(){
         if(state.email===undefined || state.email===null || state.email==="" ||
         state.email.length>320 || !emailRegex.test(state.email) || whitespaceRegex.test(state.email)){
-            let resultContainer=document.getElementById("fpform-result-display");
-            let resultContent=document.getElementById("fpform-result-content");
-            resultContent.innerHTML="Invalid email";
-            resultContent.style.color="red";
-            resultContainer.style.border="1px solid red";
-            resultContainer.style.display="block";
-
+            showValidationResult("Invalid email");
             return false;
         }
 

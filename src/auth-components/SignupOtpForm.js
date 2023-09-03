@@ -9,7 +9,7 @@ import FormForOTP from "../general-components/FormForOTP";
 
 function SignupOtpForm(){
   
-    const {logged}=useContext(UserContext);
+    const {logged,scroll}=useContext(UserContext);
     const [state,setState]=useState({"otp":""});
     const navigate=useNavigate();
 
@@ -31,7 +31,7 @@ function SignupOtpForm(){
             'application/json;charset=utf-8'
             }
           }).then(res=>res.json()).then(json=>{
-              console.log(json);
+
               if(json.status===2000){
                   navigate("/loginPage",{ replace: true });
               }else if(json.status===4001){
@@ -41,6 +41,9 @@ function SignupOtpForm(){
                 resultContent.style.color="red";
                 resultContainer.style.border="1px solid red";
                 resultContainer.style.display="block";
+                if(scroll.current!==undefined){
+                    scroll.current.scrollIntoView();
+                 }
                }
              
           })
@@ -56,12 +59,12 @@ function SignupOtpForm(){
                 credentials: "include",
               })
             .then(res=>res.json()).then(json=>{
-                console.log(json);
                 if(json.status===2000){
                     resultContent.innerText=json.message;
                     resultContent.style.color="green";
                     resultContainer.style.border="1px solid green";
                     resultContainer.style.display="block";
+
                 }else if(json.status===4001){
                     navigate("/signupPage")
                 }else{
@@ -69,6 +72,9 @@ function SignupOtpForm(){
                     resultContent.style.color="red";
                     resultContainer.style.border="1px solid red";
                     resultContainer.style.display="block";
+                    if(scroll.current!==undefined){
+                        scroll.current.scrollIntoView();
+                    }
                  }
             })
         }catch(err){

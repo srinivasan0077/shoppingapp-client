@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import "../css/login.css"
 import { useContext, useState,useEffect } from "react";
 import { UserContext } from "../App";
@@ -8,10 +8,13 @@ import properties from "../properties/properties.json";
 
 function OtpForm(){
   
-    const {logged}=useContext(UserContext);
+    const {logged,scroll}=useContext(UserContext);
     const [state,setState]=useState({"otp":""});
-    const {email}=useLocation();
+    const [queryParameters] = useSearchParams();
+    const email=queryParameters.get("email");
     const navigate=useNavigate();
+    const whitespaceRegex=/\s/
+    const emailRegex=/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 
     function handleChange(e){
         state[e.target.name]=e.target.value;
@@ -43,18 +46,12 @@ function OtpForm(){
                 'application/json;charset=utf-8'
                 }
             }).then(res=>res.json()).then(json=>{
-                console.log(json);
                 if(json.status===2000){
                     navigate("/changepassword",{ replace: true });
                 }else if(json.status===4001){
                     navigate("/forgotpassword",{ replace: true });
-                }else{
-                    let resultContainer=document.getElementById("otpfw-result-display");
-                    let resultContent=document.getElementById("otpfw-result-content");
-                    resultContent.innerHTML=json.message;
-                    resultContent.style.color="red";
-                    resultContainer.style.border="1px solid red";
-                    resultContainer.style.display="block";
+                }else{            
+                    showValidationResult(json.message);
                 }
                 
             })
@@ -66,11 +63,13 @@ function OtpForm(){
     }
 
     async function resendOTP(){
-          if(email===undefined){
-              navigate("/forgotpassword",{ replace: true });
+          if(email===undefined || email===null){
+                navigate("/forgotpassword",{ replace: true });
+          }else if(email.length>320 || !emailRegex.test(email) || whitespaceRegex.test(email)){
+                showValidationResult("Invalid Email");
           }else{
             try{
-                let inputData=JSON.stringify(email.state);
+                let inputData=JSON.stringify({"email":email});
                 document.getElementById("resendotp-btn").disabled=true;
                 await fetch(properties.remoteServer+"/otpforpwchange",{
                     method:"POST",
@@ -83,16 +82,16 @@ function OtpForm(){
                 }).then(res=>res.json()).then(json=>{
                     
                     if(json.status===2000){
-                        navigate("/changepassword",{ replace: true });
-                    }else if(json.status===4001){
-                        navigate("/forgotpassword",{ replace: true });
-                    }else{
                         let resultContainer=document.getElementById("otpfw-result-display");
                         let resultContent=document.getElementById("otpfw-result-content");
                         resultContent.innerHTML=json.message;
-                        resultContent.style.color="red";
-                        resultContainer.style.border="1px solid red";
+                        resultContent.style.color="blue";
+                        resultContainer.style.border="1px solid blue";
                         resultContainer.style.display="block";
+                    }else if(json.status===4001){
+                        navigate("/forgotpassword",{ replace: true });
+                    }else{
+                        showValidationResult(json.message);
                     }
                 })
         }catch(err){
@@ -103,14 +102,21 @@ function OtpForm(){
       }
     }
 
+    function showValidationResult(message){
+        let resultContainer=document.getElementById("otpfw-result-display");
+        let resultContent=document.getElementById("otpfw-result-content");
+        resultContent.innerText=message;
+        resultContent.style.color="red";
+        resultContainer.style.border="1px solid red";
+        resultContainer.style.display="block";
+        if(scroll.current!==undefined){
+            scroll.current.scrollIntoView();
+         }
+    }
+
     function validateOTPForm(){
         if(state.otp===undefined || state.otp===null || isNaN(state.otp) || state.otp.toString().length!==6){
-            let resultContainer=document.getElementById("otpfw-result-display");
-            let resultContent=document.getElementById("otpfw-result-content");
-            resultContent.innerHTML="Invalid otp";
-            resultContent.style.color="red";
-            resultContainer.style.border="1px solid red";
-            resultContainer.style.display="block";
+            showValidationResult("Invalid otp");
             return false;
         }
         return true;

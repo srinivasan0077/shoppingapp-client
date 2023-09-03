@@ -5,6 +5,7 @@ import "../css/general.css";
 import BoxComponent from "./Box";
 import properties from "../properties/properties.json";
 import { useParams, useSearchParams } from "react-router-dom";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 
 function ProductVariants(){
@@ -56,61 +57,60 @@ function ProductVariants(){
         if(lastVariant.current!==undefined){
            getInfo.paginationKey=lastVariant.current.variantId;
         }
-
-        fetch(url,{
-           method:"POST",
-           credentials: "include",
-           body:JSON.stringify(getInfo),
-           headers: {
-               'Content-Type': 
-               'application/json;charset=utf-8'    
-           }
-         }).then(
-           (stream)=>stream.json()
-        ).then(
-           (json)=>{
-               if(json.status===2000){
-                        if(json.content.length===0){
-                            hasMore.current=false;
-                            if(initial){
-                                setComps(variantComponents.current);
+        
+        try{
+            fetch(url,{
+            method:"POST",
+            credentials: "include",
+            body:JSON.stringify(getInfo),
+            headers: {
+                'Content-Type': 
+                'application/json;charset=utf-8'    
+            }
+            }).then(
+            (stream)=>stream.json()
+            ).then(
+            (json)=>{
+                if(json.status===2000){
+                            if(json.content.length===0){
+                                hasMore.current=false;
+                                if(initial){
+                                    setComps(variantComponents.current);
+                                }
+                                return;
                             }
-                            return;
-                        }
 
-                        let variants=json.content;
-                        if(variants.length>0){
-                            lastVariant.current=variants[variants.length-1];
-                            if(initial){
-                                variantComponents.current=variants;
-                            }else{
-                                variantComponents.current=variantComponents.current.concat(variants);
+                            let variants=json.content;
+                            if(variants.length>0){
+                                lastVariant.current=variants[variants.length-1];
+                                if(initial){
+                                    variantComponents.current=variants;
+                                }else{
+                                    variantComponents.current=variantComponents.current.concat(variants);
+                                }
                             }
-                        }
 
-                        setComps(variantComponents.current);
+                            setComps(variantComponents.current);
 
 
-               }
-           }
-        )
-   }
-
-   function loadMore(){
-        if(hasMore.current){
-            fetchVariants(false);
+                }
+            }
+            )
+        }catch(error){
+              console.log(error)
         }
    }
 
 
     return(
-        <>
+        
         <div className="home-page">
            <div className="component-margin">
                    <div style={{marginTop:10}}>
                        
                             <div className="topic-style">{header.productName}</div>  
-                            <div className="grid-container" id="variant-component">
+                           
+                            <InfiniteScroll  className="grid-container"  dataLength={comps.length} next={fetchVariants} hasMore={hasMore.current} scrollableTarget="scrollableDiv">
                                 {comps.map(variant=>{
                                             return (
                                                 <div key={variant.variantId}>
@@ -118,15 +118,12 @@ function ProductVariants(){
                                                 </div>
                                             )
                                 })}
-                            </div>
-                            <div className="center-the-item" style={{margin:20}}>
-                               <button onClick={loadMore} className="general-maroon-btn-style">Load More</button>
-                            </div>
+                            </InfiniteScroll>
                       
                     </div>
            </div>
         </div>
-        </>
+        
     )
 }
 

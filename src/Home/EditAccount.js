@@ -134,7 +134,7 @@ function EditAccount(){
             return (
             <div className="input-container">
                 <div className="input-name">Phone</div>
-                <input className="form-control" type={"number"} name="phone" value={state.phone} onChange={handleChange}/>
+                <input className="form-control" type={"number"} name="phone" value={state.phone} onChange={handleChange} onKeyDown={handleKeyInput}/>
             </div>
             )
         }else if(edit==="password"){
@@ -142,11 +142,11 @@ function EditAccount(){
                 <>
                     <div className="input-container">
                         <div className="input-name">Password</div>
-                        <input className="form-control" type={"password"} name="password" value={state.password} onChange={handleChange}/>
+                        <input className="form-control" type={"password"} name="password" value={state.password} onChange={handleChange} onKeyDown={handleKeyInput}/>
                     </div>
                     <div className="input-container">
                         <div className="input-name">Confirm Password</div>
-                        <input className="form-control" type={"password"} name="confirmpw" value={state.confirmpw} onChange={handleChange}/>
+                        <input className="form-control" type={"password"} name="confirmpw" value={state.confirmpw} onChange={handleChange} onKeyDown={handleKeyInput}/>
                     </div>
                 </>
             )
@@ -154,12 +154,21 @@ function EditAccount(){
             return (
                 <div className="input-container">
                     <div className="input-name">{edit==="firstname"?"First Name":"Last Name"}</div>
-                    <input className="form-control" type={"text"} name={edit} value={state[edit]} onChange={handleChange}/>
+                    <input className="form-control" type={"text"} name={edit} value={state[edit]} onChange={handleChange} onKeyDown={handleKeyInput}/>
                 </div>
                 )
         }
     }
 
+    
+    function handleKeyInput(e){
+        if(e.key==='Enter'){
+            const editaccountBtn=document.getElementById("editaccount-btn");
+            if(editaccountBtn!==undefined){
+                editaccountBtn.click();
+            }
+        }
+    }
 
     return (
         <div className="login-body">

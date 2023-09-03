@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 
 function SignUpPage(){
-    const {logged}=useContext(UserContext);
+    const {logged,scroll}=useContext(UserContext);
     const [state,setState]=useState({"email":"","password":"","confirmpw":"","firstname":"","lastname":""});
     const navigate=useNavigate();
     const whitespaceRegex=/\s/
@@ -39,76 +39,57 @@ function SignUpPage(){
                     if(json.status===2000){
                         navigate("/otpvalidationform")
                     }else{
-                        let resultContainer=document.getElementById("signup-result-display");
-                        let resultContent=document.getElementById("signup-result-content");
-                        resultContent.innerHTML=json.message;
-                        resultContent.style.color="red";
-                        resultContainer.style.border="1px solid red";
-                        resultContainer.style.display="block";
+                        showValidationResult(json.message);   
                     }
             
                 })
            }catch(err){
                  console.log(err);
            }finally{
-                 console.log("Executed")
                  document.getElementById("signup-btn").disabled=false;
            }
+    }
+
+    function showValidationResult(message){
+        let resultContainer=document.getElementById("signup-result-display");
+        let resultContent=document.getElementById("signup-result-content");
+        resultContent.innerText=message;
+        resultContent.style.color="red";
+        resultContainer.style.border="1px solid red";
+        resultContainer.style.display="block";
+        if(scroll.current!==undefined){
+            scroll.current.scrollIntoView();
+         }
     }
 
     function validateSignupDetails(){
 
         if(state.firstname===undefined || state.firstname===null || 
         whitespaceRegex.test(state.firstname) || state.firstname.length<1 || state.firstname.length>20){
-              let resultContainer=document.getElementById("signup-result-display");
-              let resultContent=document.getElementById("signup-result-content");
-              resultContent.innerText="Firstname length should be between 1 and 20 and no whitespce allowed.";
-              resultContent.style.color="red";
-              resultContainer.style.border="1px solid red";
-              resultContainer.style.display="block";
+              showValidationResult("Firstname length should be between 1 and 20 and no whitespce allowed.");
               return false;
         }
 
         if(state.lastname===undefined || state.lastname===null ||
         whitespaceRegex.test(state.lastname) || state.lastname.length<1 || state.lastname.length>20){
-              let resultContainer=document.getElementById("signup-result-display");
-              let resultContent=document.getElementById("signup-result-content");
-              resultContent.innerText="Lastname length should be between 1 and 20 and no whitespce allowed.";
-              resultContent.style.color="red";
-              resultContainer.style.border="1px solid red";
-              resultContainer.style.display="block";
+              showValidationResult("Lastname length should be between 1 and 20 and no whitespce allowed.");
               return false;
         }
     
         if(state.email===undefined || state.email===null ||
         state.email.length>320 || !emailRegex.test(state.email) || whitespaceRegex.test(state.email)){
-            let resultContainer=document.getElementById("signup-result-display");
-            let resultContent=document.getElementById("signup-result-content");
-            resultContent.innerText="Invalid email";
-            resultContent.style.color="red";
-            resultContainer.style.border="1px solid red";
-            resultContainer.style.display="block";
+            showValidationResult("Invalid email");
             return false;
         }
 
         if(state.password===undefined || state.password===null || state.password.length===0 ||
         whitespaceRegex.test(state.password) || state.password.length<6 || state.password.length>20){
-              let resultContainer=document.getElementById("signup-result-display");
-              let resultContent=document.getElementById("signup-result-content");
-              resultContent.innerText="Password length should be between 6 and 20 and no whitespce allowed.";
-              resultContent.style.color="red";
-              resultContainer.style.border="1px solid red";
-              resultContainer.style.display="block";
+              showValidationResult("Password length should be between 6 and 20 and no whitespce allowed.");
               return false;
         }
 
         if(state.password!==state.confirmpw){
-            let resultContainer=document.getElementById("signup-result-display");
-            let resultContent=document.getElementById("signup-result-content");
-            resultContent.innerText="Password and Confirm Password are not equal.";
-            resultContent.style.color="red";
-            resultContainer.style.border="1px solid red";
-            resultContainer.style.display="block";
+            showValidationResult("Password and Confirm Password are not equal.");
             return false;
         }
 

@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 
 function LoginPage(){
-    const {logged,setLogged,setCredential,user,setUser}=useContext(UserContext);
+    const {logged,setLogged,setCredential,user,setUser,scroll}=useContext(UserContext);
     const [state,setState]=useState({"email":"","password":""});
     const navigate=useNavigate();
     const whitespaceRegex=/\s/
@@ -45,12 +45,7 @@ function LoginPage(){
                   setUser({...user,"userid":content.userid,"roleid":content.roleid,"firstname":content.username});
                   navigate("/");
               }else{
-                 let resultContainer=document.getElementById("login-result-display");
-                 let resultContent=document.getElementById("login-result-content");
-                 resultContent.innerHTML=json.message;
-                 resultContent.style.color="red";
-                 resultContainer.style.border="1px solid red";
-                 resultContainer.style.display="block";
+                  showValidationResult(json.message);
               }
     
           })
@@ -65,28 +60,30 @@ function LoginPage(){
         state[e.target.name]=e.target.value;
         setState({...state});
     }
+
+    function showValidationResult(message){
+        let resultContainer=document.getElementById("login-result-display");
+        let resultContent=document.getElementById("login-result-content");
+        resultContent.innerText=message;
+        resultContent.style.color="red";
+        resultContainer.style.border="1px solid red";
+        resultContainer.style.display="block";
+        if(scroll.current!==undefined){
+            scroll.current.scrollIntoView();
+         }
+    }
     
     function validateLoginDetails(){
     
         if(state.email===undefined || state.email===null || state.email==="" ||
            state.email.length>320 || !emailRegex.test(state.email) || whitespaceRegex.test(state.email)){
-            let resultContainer=document.getElementById("login-result-display");
-            let resultContent=document.getElementById("login-result-content");
-            resultContent.innerHTML="Invalid email";
-            resultContent.style.color="red";
-            resultContainer.style.border="1px solid red";
-            resultContainer.style.display="block";
+            showValidationResult("Invalid email");
             return false;
         }
 
         if(state.password===undefined || state.password===null || state.password==="" ||
         whitespaceRegex.test(state.password) || state.password.length<6 || state.password.length>20){
-              let resultContainer=document.getElementById("login-result-display");
-              let resultContent=document.getElementById("login-result-content");
-              resultContent.innerHTML="Invalid password";
-              resultContent.style.color="red";
-              resultContainer.style.border="1px solid red";
-              resultContainer.style.display="block";
+              showValidationResult("Invalid password");
               return false;
         }
 
