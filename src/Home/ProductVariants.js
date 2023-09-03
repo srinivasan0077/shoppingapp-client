@@ -45,6 +45,7 @@ function ProductVariants(){
     }
 
     function fetchVariants(initial){
+        
         let getInfo={}
         let url=properties.remoteServer+"/public/api/products/"+productId+"/variants";
 
@@ -56,6 +57,10 @@ function ProductVariants(){
 
         if(lastVariant.current!==undefined){
            getInfo.paginationKey=lastVariant.current.variantId;
+        }
+
+        if(initial===undefined && lastVariant.current===undefined){
+            return;
         }
         
         try{
@@ -72,12 +77,8 @@ function ProductVariants(){
             ).then(
             (json)=>{
                 if(json.status===2000){
-                            if(json.content.length===0){
+                            if(json.content.length!==8){
                                 hasMore.current=false;
-                                if(initial){
-                                    setComps(variantComponents.current);
-                                }
-                                return;
                             }
 
                             let variants=json.content;
