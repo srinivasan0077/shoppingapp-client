@@ -23,12 +23,14 @@
 }
 .font-style-item-price{
     font-family:'Courier New', Courier, monospace;
-    color:maroon
+    color:maroon;
+    font-size: 14px;
 }
 
 .font-style-variant{
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    color:#2F4F4F
+    color:#2F4F4F;
+    font-size: 14px;
 }
 
 @media (max-width:1000px) {
