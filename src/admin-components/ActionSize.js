@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams,useNavigate } from "react-router-dom";
 import properties from "../properties/properties.json";
 import "../admin-styles/general.css";
 import { UserContext } from "../App";
@@ -9,10 +9,14 @@ function ActionSize(props){
    const {id,sizeId}=useParams();
    const [state,setState]=useState({sizeId:0,name:"",description:"",order:0,product:{productId:id}});
    const productName=useLocation().state;
-   const {credential}=useContext(UserContext);
+   const {credential,user,logged}=useContext(UserContext);
+   const navigate=useNavigate();
 
    useEffect(()=>{
-
+        if(!logged || user.roleid!==2){
+            navigate("/",{replace:true});
+            return;
+        }
        document.getElementById("size-result-display").style.display="none";
 
        if(props.operation==="add"){

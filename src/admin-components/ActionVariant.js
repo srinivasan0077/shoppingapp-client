@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams,useNavigate } from "react-router-dom";
 import properties from "../properties/properties.json";
 import "../admin-styles/general.css";
 import { UserContext } from "../App";
@@ -10,9 +10,14 @@ function ActionVariant(props){
    const [action,setAction]=useState();
    const {id,variantId}=useParams();
    const [state,setState]=useState({variantId:0,name:"",price:"",item:{productItemId:id},color:{}});
-   const {credential}=useContext(UserContext);
+   const {credential,user,logged}=useContext(UserContext);
+   const navigate=useNavigate(); 
 
    useEffect(()=>{
+    if(!logged || user.roleid!==2){
+        navigate("/",{replace:true});
+        return;
+    }
     const preApiCalls=async ()=>{
 
             document.getElementById("variant-result-display").style.display="none";

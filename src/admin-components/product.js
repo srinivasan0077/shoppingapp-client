@@ -7,9 +7,13 @@ import { UserContext } from "../App";
 function Product(){
     const [products,setProducts]=useState([]);
     const navigate=useNavigate();
-    const {credential}=useContext(UserContext);
+    const {credential,user,logged}=useContext(UserContext);
 
     useEffect(()=>{
+        if(!logged || user.roleid!==2){
+            navigate("/",{replace:true});
+            return;
+        }
         fetchProducts();
     },[])
 

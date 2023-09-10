@@ -17,7 +17,7 @@ function Support(){
                     </div>
                     <div className='support-container-child'>
                         <FaMailBulk style={{color:"maroon",fontSize:20,marginRight:10}}/>
-                        <div>srinivasandhandapani071201@gmail.com</div>
+                        <div>royallcustomerservice1@gmail.com</div>
                     </div>
                     <div className='support-container-child'>
                         <FaAddressCard style={{color:"maroon",fontSize:20,marginRight:10}}/>

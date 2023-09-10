@@ -5,11 +5,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../App";
 
 function Topic(){
-    const {credential}=useContext(UserContext);
+    const {credential,user,logged}=useContext(UserContext);
     const [topics,setTopics]=useState([]);
     const navigate=useNavigate();
 
     useEffect(()=>{
+        if(!logged || user.roleid!==2){
+            navigate("/",{replace:true});
+            return;
+        }
         fetchTopics();
     },[])
 

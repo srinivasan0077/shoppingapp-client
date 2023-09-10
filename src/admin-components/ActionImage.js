@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import {  useParams } from "react-router-dom";
+import {  useParams,useNavigate } from "react-router-dom";
 import properties from "../properties/properties.json";
 import "../admin-styles/general.css";
 import { UserContext } from "../App";
@@ -10,9 +10,14 @@ function ActionImage(props){
    const {variantId,imageId}=useParams();
    const [variant,setVariant]=useState({});
    const [state,setState]=useState({name:"",ord:0,image:""});
-   const {credential}=useContext(UserContext);
+   const {credential,user,logged}=useContext(UserContext);
+   const navigate=useNavigate();
 
    useEffect(()=>{
+    if(!logged || user.roleid!==2){
+        navigate("/",{replace:true});
+        return;
+    }
 
     document.getElementById("image-result-display").style.display="none";
     fetch(properties.remoteServer+"/admin/api/variants/"+variantId,{

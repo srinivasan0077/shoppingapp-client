@@ -163,7 +163,7 @@ function Header(){
                     </div>
                     <div onClick={()=>{toggleSideNav();navigate("/");}}>Home</div>
                     {renderHeaders(true,true)}
-                    <div>Customer Service</div>
+                    <div onClick={()=>{navigate("/customer-care")}}>Customer Service</div>
                 </div>
                 
             </div>

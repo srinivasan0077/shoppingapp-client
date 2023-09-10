@@ -96,7 +96,12 @@ function Checkout(){
                     ).then(
                     (json)=>{
                         if(json.status===2000){
-                            console.log(json.content)
+                            let resultContainer=document.getElementById("checkout-result-display");
+                            let resultContent=document.getElementById("checkout-result-content");
+                            resultContent.innerText="You sample order is successful! Payment gateway is in development.";
+                            resultContent.style.color="green";
+                            resultContainer.style.border="1px solid green";
+                            resultContainer.style.display="block";
                         }else{
                             let resultContainer=document.getElementById("checkout-result-display");
                             let resultContent=document.getElementById("checkout-result-content");
@@ -183,7 +188,8 @@ function Checkout(){
             }
         }
         const radioButton=document.getElementById("radio-btn-"+addressId);
-        radioButton.style.backgroundColor="maroon";
+        radioButton.style.backgroundColor="lightgreen";
+        radioButton.style.padding="1px";
         pickedAddress.current=addressId;
     }
 

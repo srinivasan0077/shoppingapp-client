@@ -46,6 +46,7 @@ import Conditions from './Home/Conditions';
 import Privacy from './Home/Privacy';
 import Refund from './Home/Refund';
 import Shipping from './Home/Shipping';
+import Order from './admin-components/order';
 
 
 const UserContext=createContext();
@@ -150,7 +151,7 @@ function App() {
                 <Route path='banners' element={<BannerImages/>}/>
                 <Route path='banners/add' element={<ActionBanner operation="add"/>}/>
                 <Route path='banners/:imageId/edit' element={<ActionBanner operation="edit"/>}/>
-
+                <Route path='orders' element={<Order/>}/>
             </Route>
             <Route path="/" element={<Header/>}>
               <Route index element={<Home/>} />

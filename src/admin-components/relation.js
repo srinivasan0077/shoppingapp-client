@@ -9,9 +9,13 @@ function Relation(){
     const {topicId}=useParams();
     const navigate=useNavigate();
     const [topic,setTopic]=useState({});
-    const {credential}=useContext(UserContext);
+    const {credential,logged,user}=useContext(UserContext);
 
     useEffect(()=>{
+        if(!logged || user.roleid!==2){
+            navigate("/",{replace:true});
+            return;
+        }
         fetch(properties.remoteServer+"/admin/api/topics/"+topicId,{
             credentials: "include",
             headers: {

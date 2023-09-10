@@ -12,10 +12,14 @@ function Item(){
     const navigate=useNavigate();
     const [stack,setStack]=useState([]);
     const [applyFilter,setApplyFilter]=useState(false);
-    const {credential}=useContext(UserContext);
+    const {credential,user,logged}=useContext(UserContext);
 
 
     useEffect(()=>{
+        if(!logged || user.roleid!==2){
+            navigate("/",{replace:true});
+            return;
+        }
         fetchItems();
     },[applyFilter])
 

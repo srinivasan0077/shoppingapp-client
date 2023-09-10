@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Link,useParams } from "react-router-dom";
+import { Link,useParams,useNavigate } from "react-router-dom";
 import properties from "../properties/properties.json";
 import "../admin-styles/general.css";
 import Select from "react-select";
@@ -14,7 +14,8 @@ function ActionRelation(props){
    const options=[{value:"variantId",label:"Variant Id"},{value:"name",label:"Variant Name"},{value:"item",label:"Item Id"}]
    const [stack,setStack]=useState([]);
    const [topic,setTopic]=useState({});
-   const {credential}=useContext(UserContext);
+   const {credential,user,logged}=useContext(UserContext);
+   const navigate=useNavigate();
 
    function handleFieldSelect(SelectedOption){
     filter.filterBy=SelectedOption.value;
@@ -22,6 +23,10 @@ function ActionRelation(props){
    }
 
    useEffect(()=>{
+            if(!logged || user.roleid!==2){
+                navigate("/",{replace:true});
+                return;
+            }
             fetch(properties.remoteServer+"/admin/api/topics/"+topicId,{
                 credentials: "include",
                 headers: {

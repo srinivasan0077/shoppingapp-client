@@ -9,8 +9,12 @@ function Inventory(){
     const [variant,setVariant]=useState({});
     const navigate=useNavigate();
     const {id,variantId}=useParams();
-    const {credential}=useContext(UserContext);
+    const {credential,user,logged}=useContext(UserContext);
     useEffect(()=>{
+        if(!logged || user.roleid!==2){
+            navigate("/",{replace:true});
+            return;
+        }
         fetchInventories();
     },[])
 

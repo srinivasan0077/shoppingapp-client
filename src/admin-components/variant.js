@@ -5,7 +5,7 @@ import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { UserContext } from "../App";
 
 function Variant(){
-    const {credential}=useContext(UserContext);
+    const {credential,user,logged}=useContext(UserContext);
     const [variants,setVariants]=useState([]);
     const navigate=useNavigate();
     const [stack,setStack]=useState([]);
@@ -13,7 +13,11 @@ function Variant(){
     const [item,setItem]=useState({productItemId:0,productItemName:"",description:"",product:{}})
 
     useEffect(()=>{
-        
+        if(!logged || user.roleid!==2){
+            navigate("/",{replace:true});
+            return;
+        }
+
         fetch(properties.remoteServer+"/admin/api/items/"+id,{
             credentials: "include",
             headers: {

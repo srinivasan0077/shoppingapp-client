@@ -8,12 +8,16 @@ import { UserContext } from "../App";
 function Color(){
     const [colors,setColors]=useState([]);
     const navigate=useNavigate();
-    const {credential}=useContext(UserContext);
+    const {credential,user,logged}=useContext(UserContext);
     const [stack,setStack]=useState([]);
     const [filter,setFilter]=useState({filterBy:"name",filterValue:""});
     const [applyFilter,setApplyFilter]=useState(false);
 
     useEffect(()=>{
+        if(!logged || user.roleid!==2){
+            navigate("/",{replace:true});
+            return;
+        }
         fetchColors();
     },[applyFilter])
 

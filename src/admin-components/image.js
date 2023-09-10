@@ -12,8 +12,12 @@ function Images(){
     const {id,variantId}=useParams();
     const [currentImage, setCurrentImage] = useState([]);
     const [isViewerOpen, setIsViewerOpen] = useState(false);
-    const {credential}=useContext(UserContext);
+    const {credential,user,logged}=useContext(UserContext);
     useEffect(()=>{
+        if(!logged || user.roleid!==2){
+            navigate("/",{replace:true});
+            return;
+        }
         fetchImages();
     },[])
 

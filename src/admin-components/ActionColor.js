@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import {useParams } from "react-router-dom";
+import {useParams,useNavigate } from "react-router-dom";
 import properties from "../properties/properties.json";
 import "../admin-styles/general.css";
 import { UserContext } from "../App";
@@ -8,10 +8,14 @@ function ActionColor(props){
    const [action,setAction]=useState();
    const {id}=useParams();
    const [state,setState]=useState({colorId:0,name:"",cssColor:""})
-   const {credential}=useContext(UserContext);
+   const {credential,user,logged}=useContext(UserContext);
+   const navigate=useNavigate();
 
    useEffect(()=>{
-      
+    if(!logged || user.roleid!==2){
+        navigate("/",{replace:true});
+        return;
+    }
         document.getElementById("color-result-display").style.display="none";
 
     

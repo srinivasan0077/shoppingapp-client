@@ -1,6 +1,5 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import "../admin-styles/admin-header.css";
-import Logo from "../images/royall.png"
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../App";
 
@@ -25,8 +24,8 @@ function AdminHeader(){
                 <>
                 <div className="admin-header">
             
-                        <div>
-                            <img className="admin-img-style" src={Logo} alt="logo-img"/>
+                        <div className="admin-nav" style={{fontSize:30}}>
+                            Royall
                         </div>
                         <div className="admin-nav" onClick={()=>{navigate("/admin/hack/category")}}>
                             Categories
@@ -45,6 +44,9 @@ function AdminHeader(){
                         </div>
                         <div className="admin-nav" onClick={()=>{navigate("/admin/hack/banners")}}>
                             Banners
+                        </div>
+                        <div className="admin-nav" onClick={()=>{navigate("/admin/hack/orders")}}>
+                            Orders
                         </div>
                  </div>
                  <Outlet/>

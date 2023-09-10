@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import {  useParams } from "react-router-dom";
+import {  useParams,useNavigate } from "react-router-dom";
 import properties from "../properties/properties.json";
 import "../admin-styles/general.css";
 import { UserContext } from "../App";
@@ -9,10 +9,16 @@ function ActionBanner(props){
    const [action,setAction]=useState();
    const {imageId}=useParams();
    const [state,setState]=useState({name:"",ord:0,image:""});
-   const {credential}=useContext(UserContext);
+   const {credential,user,logged}=useContext(UserContext);
+   const navigate=useNavigate();
 
    useEffect(()=>{
 
+    if(!logged || user.roleid!==2){
+        navigate("/",{replace:true});
+        return;
+    }
+    
     document.getElementById("banner-result-display").style.display="none";
 
     if(props.operation==="add"){

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import {useParams } from "react-router-dom";
+import {useParams,useNavigate } from "react-router-dom";
 import properties from "../properties/properties.json";
 import "../admin-styles/general.css";
 import Select from "react-select";
@@ -12,9 +12,14 @@ function ActionProduct(props){
    const [state,setState]=useState({productId:0,productName:"",description:"",productType:{},isHeader:false})
    const [options,setOptions]=useState([]);
    const optionsForIsHeader=[{value:true,label:"true"},{value:false,label:"false"}];
-   const {credential}=useContext(UserContext);
+   const {credential,user,logged}=useContext(UserContext);
+   const navigate=useNavigate();
 
    useEffect(()=>{
+    if(!logged || user.roleid!==2){
+        navigate("/",{replace:true});
+        return;
+    }
     const preApiCalls=async ()=>{
             
             document.getElementById("product-result-display").style.display="none";

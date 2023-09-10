@@ -9,9 +9,13 @@ function Size(){
     const navigate=useNavigate();
     const {id}=useParams();
     const productName=useLocation().state;
-    const {credential}=useContext(UserContext);
+    const {credential,user,logged}=useContext(UserContext);
 
     useEffect(()=>{
+        if(!logged || user.roleid!==2){
+            navigate("/",{replace:true});
+            return;
+        }
         fetchSizes();
     },[])
 
