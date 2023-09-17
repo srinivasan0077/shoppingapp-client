@@ -7,7 +7,7 @@ import {useRef, useState } from "react";
 import { useEffect } from "react";
 import { useContext } from "react";
 import { UserContext } from "../App";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import properties from "../properties/properties.json";
 
 function Checkout(){
@@ -21,6 +21,7 @@ function Checkout(){
     const [queryParameters] = useSearchParams();
     const items=queryParameters.get("items");
     const [subTotal,setSubTotal]=useState(0);
+    const navigate=useNavigate();
 
     useEffect(()=>{
         document.getElementById("checkout-result-display").style.display="none";
@@ -96,12 +97,7 @@ function Checkout(){
                     ).then(
                     (json)=>{
                         if(json.status===2000){
-                            let resultContainer=document.getElementById("checkout-result-display");
-                            let resultContent=document.getElementById("checkout-result-content");
-                            resultContent.innerText="You sample order is successful! Payment gateway is in development.";
-                            resultContent.style.color="green";
-                            resultContainer.style.border="1px solid green";
-                            resultContainer.style.display="block";
+                            navigate("/payment/"+json.content.orderId,{state:{...json.content}});
                         }else{
                             let resultContainer=document.getElementById("checkout-result-display");
                             let resultContent=document.getElementById("checkout-result-content");

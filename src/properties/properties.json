@@ -1,3 +1,5 @@
 {
-    "remoteServer":"https://api.royall.in"
+    "remoteServer":"https://api.royall.in",
+    "stripePublishableKey":"pk_test_51NngrKSEWXnIb0husri8hbOKbdHoGFyVJ2NgoeRIscSwQY9IaDdUqecPAGqnxQNic8CGHxi0d2pzhomEFasf5BdK00zLNfevHI",
+    "clientServer":"https://royall.in"
 }

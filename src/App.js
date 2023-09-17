@@ -47,6 +47,7 @@ import Privacy from './Home/Privacy';
 import Refund from './Home/Refund';
 import Shipping from './Home/Shipping';
 import Order from './admin-components/order';
+import Payment from './Home/Payment';
 
 
 const UserContext=createContext();
@@ -173,6 +174,7 @@ function App() {
               <Route path="privacy-policy"  element={<Privacy/>}/>
               <Route path="refund-policy"  element={<Refund/>}/>
               <Route path="shipping-policy"  element={<Shipping/>}/>
+              <Route path="payment/:orderId"  element={<Payment/>}/>
             </Route>
             <Route path='*' element={<NotFound/>}/>
           </Routes>
