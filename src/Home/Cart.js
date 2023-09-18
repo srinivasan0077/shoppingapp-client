@@ -228,7 +228,11 @@ function Cart(){
             }
             cart.push(shoppingCart[key]);
         }
-        navigate("/checkout?items="+encodeURIComponent(JSON.stringify(cart)));
+        if(cart.length>0){
+             navigate("/checkout?items="+encodeURIComponent(JSON.stringify(cart)));
+        }else{
+            showAlertNotice("Cannot move to checkout page as no items in cart!",1);
+        }
     }
 
 

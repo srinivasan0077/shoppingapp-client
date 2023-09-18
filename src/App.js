@@ -48,6 +48,8 @@ import Refund from './Home/Refund';
 import Shipping from './Home/Shipping';
 import Order from './admin-components/order';
 import Payment from './Home/Payment';
+import OrderSuccess from './Home/OrderSuccess';
+import ViewOrder from './admin-components/vieworder';
 
 
 const UserContext=createContext();
@@ -153,6 +155,7 @@ function App() {
                 <Route path='banners/add' element={<ActionBanner operation="add"/>}/>
                 <Route path='banners/:imageId/edit' element={<ActionBanner operation="edit"/>}/>
                 <Route path='orders' element={<Order/>}/>
+                <Route path='orders/:orderId' element={<ViewOrder/>}/>
             </Route>
             <Route path="/" element={<Header/>}>
               <Route index element={<Home/>} />
@@ -175,6 +178,7 @@ function App() {
               <Route path="refund-policy"  element={<Refund/>}/>
               <Route path="shipping-policy"  element={<Shipping/>}/>
               <Route path="payment/:orderId"  element={<Payment/>}/>
+              <Route path="payment/success"  element={<OrderSuccess/>}/>
             </Route>
             <Route path='*' element={<NotFound/>}/>
           </Routes>
