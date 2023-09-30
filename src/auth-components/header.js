@@ -13,6 +13,16 @@ function Header(){
 
 
     useEffect(()=>{
+        let count=0;
+         let cart=localStorage.getItem("cart");
+         if(cart!==null || cart!==undefined){
+              cart=JSON.parse(cart);
+              for(let key in cart){
+                  count+=cart[key].count;
+              }
+         }
+         setCartCount(count);
+         
         fetch(properties.remoteServer+"/public/api/headers",{
             method:"GET",
             credentials: "include"
@@ -25,37 +35,8 @@ function Header(){
                 }
             }
          )
+         
     },[])
-
-    useEffect(()=>{
-          if(logged){
-            fetch(properties.remoteServer+"/auth/api/carts/_count",{
-                method:"GET",
-                credentials: "include",
-                headers: {
-                'csrfToken':credential
-                }
-                }).then(
-                (stream)=>stream.json()
-                ).then(
-                (json)=>{
-                      if(json.status===2000){
-                         setCartCount(json.noofrows);
-                      }
-                })
-          }else{
-              let count=0;
-              let cart=localStorage.getItem("cart");
-              if(cart!==null || cart!==undefined){
-                   cart=JSON.parse(cart);
-                   for(let key in cart){
-                       count+=cart[key].count;
-                   }
-              }
-              setCartCount(count);
-          }
-    },[logged])
-
    
 
     function handleKeyPress(e){
@@ -90,7 +71,7 @@ function Header(){
                    <button className="bag-container-style"><FaUser className="bag-style"/></button>
                    <div className="account-dropdown-content">
                         <div onClick={()=>{navigate("/my-account")}}>My Account</div>
-                        <div>Your Orders</div>
+                        <div>My Orders</div>
                         <div onClick={logoutUser}>Logout</div>
                     </div>
                 </div>

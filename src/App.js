@@ -3,11 +3,7 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import './App.css';
 import Header from './auth-components/header';
 import LoginPage from './auth-components/Login';
-import SignUpPage from './auth-components/SignUp';
 import properties from "./properties/properties.json";
-import EmailForm from './auth-components/EmailForm';
-import OtpForm from './auth-components/OtpForm';
-import ChangePasswordForm from './auth-components/ChangePassword';
 import SignupOtpForm from './auth-components/SignupOtpForm';
 import Home from './Home/Home';
 import Category from './admin-components/category';
@@ -160,11 +156,7 @@ function App() {
             <Route path="/" element={<Header/>}>
               <Route index element={<Home/>} />
               <Route path="loginPage" element={<LoginPage />} />
-              <Route path="signupPage" element={<SignUpPage />} />
               <Route path="otpvalidationform" element={<SignupOtpForm/>} />
-              <Route path="forgotpassword" element={<EmailForm/>} />
-              <Route path="otpform" element={<OtpForm/>}/>
-              <Route path="changepassword" element={<ChangePasswordForm/>} />
               <Route path="view-item/:variantId"  element={<ViewItem/>}/>
               <Route path="products/:productId/items"  element={<ProductVariants/>}/>
               <Route path="items"  element={<ProductVariants/>}/>

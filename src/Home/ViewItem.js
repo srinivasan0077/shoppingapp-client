@@ -14,7 +14,7 @@ function ViewItem(){
     const [inventory,setInventory]=useState();
     const [svariants,setSVariants]=useState();
     const [stocks,setStocks]=useState(1)
-    const {logged,cartCount,setCartCount,credential}=useContext(UserContext);
+    const {cartCount,setCartCount}=useContext(UserContext);
     const navigate=useNavigate();
 
     useEffect(()=>{
@@ -148,37 +148,10 @@ function ViewItem(){
             showAlertNotice("Only "+inventory.availableStocks+" items available!",1);
         }else if(cartCount+stocks>50){
             showAlertNotice("Cannot add more than 50 items to cart!",1);
-        }else if(logged){
-            let cart={
-                inventory:inventory,
-                count:stocks
-            }
-
-            fetch(properties.remoteServer+"/auth/api/carts",{
-                method:"POST",
-                body:JSON.stringify(cart),
-                credentials: "include",
-                headers: {
-                'Content-Type': 
-                'application/json;charset=utf-8',
-                'csrfToken':credential
-                }
-                }).then(
-                (stream)=>stream.json()
-                ).then(
-                (json)=>{
-                      if(json.status===2000){
-                         navigate("/view-cart");
-                         setCartCount(cartCount+stocks);
-                      }else if(json.status===4000){
-                         showAlertNotice(json.message,1);
-                      }
-                })
-
         }else{
             let cart=localStorage.getItem("cart");
             let inventoryObj={...inventory,count:stocks};
-            console.log(cart)
+           
             if(cart===null || cart===undefined){
                 cart={};
                 cart["key:"+inventoryObj.inventoryId]=inventoryObj;

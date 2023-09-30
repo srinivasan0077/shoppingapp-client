@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "../css/login.css"
 
 
@@ -6,10 +6,10 @@ function FormForOTP(props){
   
     const {state,setState}=props;
     const {handleSubmit,handleResendCode}=props;
-
+   
     useEffect(()=>{
         document.getElementById("spotpform-result-display").style.display="none";
-    },[])
+    },[]);
 
     function handleChange(e){
         state[e.target.name]=e.target.value;

@@ -1,4 +1,4 @@
-import {useNavigate } from "react-router-dom";
+import {useLocation, useNavigate } from "react-router-dom";
 import "../css/login.css"
 import { useContext, useState,useEffect } from "react";
 import { UserContext } from "../App";
@@ -9,9 +9,10 @@ import FormForOTP from "../general-components/FormForOTP";
 
 function SignupOtpForm(){
   
-    const {logged,scroll}=useContext(UserContext);
+    const {logged,scroll,setLogged,setCredential,setUser,user}=useContext(UserContext);
     const [state,setState]=useState({"otp":""});
     const navigate=useNavigate();
+    const history=useLocation().state;
 
     useEffect(()=>{
         if(logged){
@@ -33,9 +34,17 @@ function SignupOtpForm(){
           }).then(res=>res.json()).then(json=>{
 
               if(json.status===2000){
-                  navigate("/loginPage",{ replace: true });
-              }else if(json.status===4001){
-                    navigate("/signupPage")
+                  setLogged(true);
+                  let content=JSON.parse(json.content);
+                  setCredential(content.csrfToken);
+                  setUser({...user,"userid":content.userid,"roleid":content.roleid,"firstname":content.username});
+                  if(history!==null && history!==undefined && history.redirectUrl!==undefined){
+                    navigate(history.redirectUrl,{ replace: true });
+                  }else{
+                        navigate("/",{ replace: true });
+                  }
+              }else if(json.status===4002){
+                    navigate("/loginPage")
               }else{
                 resultContent.innerText=json.message;
                 resultContent.style.color="red";
@@ -66,7 +75,7 @@ function SignupOtpForm(){
                     resultContainer.style.display="block";
 
                 }else if(json.status===4001){
-                    navigate("/signupPage")
+                    navigate("/loginPage")
                 }else{
                     resultContent.innerText=json.message;
                     resultContent.style.color="red";

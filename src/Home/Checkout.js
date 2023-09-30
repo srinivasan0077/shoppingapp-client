@@ -7,7 +7,7 @@ import {useRef, useState } from "react";
 import { useEffect } from "react";
 import { useContext } from "react";
 import { UserContext } from "../App";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import properties from "../properties/properties.json";
 
 function Checkout(){
@@ -22,8 +22,14 @@ function Checkout(){
     const items=queryParameters.get("items");
     const [subTotal,setSubTotal]=useState(0);
     const navigate=useNavigate();
+    const location=useLocation();
 
     useEffect(()=>{
+        if(!logged){   
+            navigate("/loginPage",{state:{redirectUrl:location.pathname+location.search}});
+            return;
+        }
+
         document.getElementById("checkout-result-display").style.display="none";
 
         let total=0;
@@ -34,32 +40,30 @@ function Checkout(){
              total+=(item.count*item.variant.price);
         }
         setSubTotal(total);
-        if(!logged){
-            setNewAddressForm(true);
-        }else{
-            fetch(properties.remoteServer+"/auth/api/addresses",{
-                method:"GET",
-                credentials: "include",
-                headers: {
-                'Content-Type': 
-                'application/json;charset=utf-8',
-                'csrfToken':credential
-                }
-                }).then(
-                (stream)=>stream.json()
-                ).then(
-                (json)=>{
-                    if(json.status===2000){
-                        if(json.content!==undefined && json.content!==null && json.content.length!==0){
-                             setSavedAddress(json.content);
-                        }else{
-                            setNewAddressForm(true);
-                        }
+      
+        fetch(properties.remoteServer+"/auth/api/addresses",{
+            method:"GET",
+            credentials: "include",
+            headers: {
+            'Content-Type': 
+            'application/json;charset=utf-8',
+            'csrfToken':credential
+            }
+            }).then(
+            (stream)=>stream.json()
+            ).then(
+            (json)=>{
+                if(json.status===2000){
+                    if(json.content!==undefined && json.content!==null && json.content.length!==0){
+                            setSavedAddress(json.content);
                     }else{
                         setNewAddressForm(true);
                     }
-                })
-        }
+                }else{
+                    setNewAddressForm(true);
+                }
+            })
+        
     },[])
 
     function handleChange(e){
@@ -69,7 +73,6 @@ function Checkout(){
 
     function placeOrderAndGotoPaymentPage(){
   
-          console.log(pickedAddress.current)
         
           if(validateAddress()){
             try{
@@ -87,11 +90,14 @@ function Checkout(){
                     headers['csrfToken']=credential;
                 }
                 
-                fetch(properties.remoteServer+"/public/api/orders",{
+                fetch(properties.remoteServer+"/auth/api/orders",{
                     method:"POST",
                     body:JSON.stringify(inputData),
                     credentials: "include",
-                    headers:headers
+                    headers: {
+                       'Content-Type': 'application/json;charset=utf-8',
+                       'csrfToken':credential
+                    }
                     }).then(
                     (stream)=>stream.json()
                     ).then(

@@ -34,7 +34,7 @@
 }
 
 .input-name{
-    font-weight: bold;
+    font-weight: lighter;
 }
 
 .login-container{
@@ -44,22 +44,21 @@
     padding: 20px;
 }
 
-
-
 .input-container{
     padding-top: 10px;
 }
 
 .input-button{
-    background-color: blue;
+    background-color: darkgoldenrod;
     color: white;
-    border: 1px solid blue;
+    border: 1px solid darkgoldenrod;
     border-radius: 3px;
     margin-top: 10px;
     width: 80px;
 }
+
 .input-button:hover{
-    border: 1px solid lightblue;
+    border: 1px solid goldenrod;
 }
 
 .button-container{

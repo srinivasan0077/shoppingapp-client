@@ -9,7 +9,7 @@ function OrderSuccess(){
     const params = new URLSearchParams(search);
     const payment_intent=params.get('payment_intent');
     const [isSuccess,setIsSuccess]=useState(false);
-    const {logged,setCartCount}=useContext(UserContext);
+    const {setCartCount}=useContext(UserContext);
 
     useEffect(()=>{
         if(payment_intent!==undefined && payment_intent!==null){
@@ -24,12 +24,12 @@ function OrderSuccess(){
                         if(json.content.status==="succeeded"){
                             setIsSuccess(true)
                         }
-                        if(!logged && json.content.isCart){
-                            localStorage.removeItem("cart");
-                        }
+
                         if(json.content.isCart){
+                            localStorage.removeItem("cart");
                             setCartCount(0);
                         }
+
                     }
                  
                     

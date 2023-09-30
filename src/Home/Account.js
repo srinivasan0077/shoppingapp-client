@@ -47,36 +47,30 @@ function Account(){
             <div className="account-container">
                     <div className="account-container-row">
                         <div className="account-container-col">First Name</div>
-                        <div className="account-container-col">{user.firstname}</div>
+                        <div className="account-container-col">{user.firstname===undefined || user.firstname===null?"-":user.firstname}</div>
                         <div className="account-container-col">
                             <input type="button" className="account-container-col-btn" onClick={()=>{navigate("/edit-account?edit=firstname")}} value={"Edit"}/>
                         </div>
                     </div>
                     <div className="account-container-row">
                         <div className="account-container-col">Last Name</div>
-                        <div className="account-container-col">{user.lastname}</div>
+                        <div className="account-container-col">{user.lastname===undefined || user.lastname===null?"-":user.lastname}</div>
                         <div className="account-container-col">
                             <input type="button" className="account-container-col-btn" onClick={()=>{navigate("/edit-account?edit=lastname")}} value={"Edit"}/>
                         </div>
                     </div>
                     <div className="account-container-row">
                         <div className="account-container-col">Email</div>
-                        <div className="account-container-col">{user.email}</div>
+                        <div className="account-container-col">{user.email===undefined || user.email===null?"-":user.email}</div>
                         <div className="account-container-col">
-                        </div>
-                    </div>
-                    <div className="account-container-row">
-                        <div className="account-container-col">Password</div>
-                        <div className="account-container-col">************</div>
-                        <div className="account-container-col">
-                            <input type="button" className="account-container-col-btn" onClick={()=>{navigate("/edit-account?edit=password")}} value={"Edit"}/>
+                           
                         </div>
                     </div>
                     <div className="account-container-row">
                         <div className="account-container-col">Phone</div>
-                        <div className="account-container-col">{user.phone==undefined?"-":user.phone}</div>
+                        <div className="account-container-col">{user.phone===undefined || user.phone===null?"-":user.phone}</div>
                         <div className="account-container-col">
-                            <input type="button" className="account-container-col-btn" onClick={()=>{navigate("/edit-account?edit=phone")}} value={"Edit"}/>
+                               <input type="button" className="account-container-col-btn" onClick={()=>{navigate("/edit-account?edit=phone")}} value={"Edit"}/>
                         </div>
                     </div>
                

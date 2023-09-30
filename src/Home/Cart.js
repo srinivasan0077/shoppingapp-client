@@ -8,34 +8,12 @@ import { useNavigate } from "react-router-dom";
 
 function Cart(){
 
-    const {logged,cartCount,setCartCount,credential}=useContext(UserContext);
+    const {cartCount,setCartCount}=useContext(UserContext);
     const [shoppingCart,setShoppingCart]=useState({});
     const [subtotal,setSubTotal]=useState(0);
     const navigate=useNavigate();
+    
     useEffect(()=>{
-        if(logged){
-            fetch(properties.remoteServer+"/auth/api/carts",{
-                method:"GET",
-                credentials: "include",
-                headers: {
-                  'csrfToken':credential
-                }
-                }).then(
-                (stream)=>stream.json()
-                ).then(
-                (json)=>{
-                      if(json.status===2000){
-                        let subtotal=0;
-                        for(let i=0;i<json.content.length;i++){
-                            shoppingCart["key:"+json.content[i].inventory.inventoryId]=json.content[i].inventory;
-                            shoppingCart["key:"+json.content[i].inventory.inventoryId].count=json.content[i].count;
-                            subtotal=subtotal+json.content[i].inventory.variant.price*json.content[i].count;
-                        }
-                        setShoppingCart(shoppingCart);
-                        setSubTotal(subtotal);
-                      }
-                })
-        }else{
             let inventories=[];
             let cart=localStorage.getItem("cart");
             if(cart!==null || cart!==undefined){
@@ -92,9 +70,9 @@ function Cart(){
                     })
                 }
             }
-        }
+        
 
-    },[logged])
+    },[])
 
     function addToCart(key){
         if(cartCount>=50){
@@ -102,49 +80,19 @@ function Cart(){
             return;
         }
 
-        if(logged){
-            let cart={
-                inventory:{inventoryId:key.split(":")[1]}
-            }
-
-            fetch(properties.remoteServer+"/auth/api/carts",{
-                method:"POST",
-                body:JSON.stringify(cart),
-                credentials: "include",
-                headers: {
-                'Content-Type': 
-                'application/json;charset=utf-8',
-                'csrfToken':credential
-                }
-                }).then(
-                (stream)=>stream.json()
-                ).then(
-                (json)=>{
-                      if(json.status===2000){
-                         let item=shoppingCart[key];
-                         item["count"]=item.count+1;
-                         setShoppingCart(shoppingCart);
-                         setCartCount(cartCount+1);
-                         setSubTotal(subtotal+item.variant.price)
-                      }else if(json.status===4000){
-                         showAlertNotice(json.message,1);
-                      }
-                })
-
-        }else{
-           let item=shoppingCart[key];
-           let cart=JSON.parse(localStorage.getItem("cart"));
-           if((item.count+1)>item.availableStocks){
-                showAlertNotice("No items left!",1);
-                return;
-           }
-           item["count"]=item.count+1;
-           cart[key]["count"]= cart[key].count+1;
-           setShoppingCart(shoppingCart);
-           localStorage.setItem("cart",JSON.stringify(cart));
-           setCartCount(cartCount+1);
-           setSubTotal(subtotal+item.variant.price)
+        let item=shoppingCart[key];
+        let cart=JSON.parse(localStorage.getItem("cart"));
+        if((item.count+1)>item.availableStocks){
+            showAlertNotice("No items left!",1);
+            return;
         }
+        item["count"]=item.count+1;
+        cart[key]["count"]= cart[key].count+1;
+        setShoppingCart(shoppingCart);
+        localStorage.setItem("cart",JSON.stringify(cart));
+        setCartCount(cartCount+1);
+        setSubTotal(subtotal+item.variant.price)
+        
     }
 
     function removeFromCart(key){
@@ -152,54 +100,19 @@ function Cart(){
             return;
         }
 
-        if(logged){
-            let cart={
-                inventory:{inventoryId:key.split(":")[1]}
-            }
-
-            fetch(properties.remoteServer+"/auth/api/carts",{
-                method:"DELETE",
-                body:JSON.stringify(cart),
-                credentials: "include",
-                headers: {
-                'Content-Type': 
-                'application/json;charset=utf-8',
-                'csrfToken':credential
-                }
-                }).then(
-                (stream)=>stream.json()
-                ).then(
-                (json)=>{
-                      if(json.status===2000){
-                        let item=shoppingCart[key];
-                        item["count"]=item.count-1;
-                        if(item.count<=0){
-                            delete shoppingCart[key];
-                        }
-                        setShoppingCart(shoppingCart);
-                        setCartCount(cartCount-1);
-                        setSubTotal(subtotal-item.variant.price)
-                      }else if(json.status===4000){
-                         showAlertNotice(json.message,1);
-                      }else if(json.status===4001){
-                         navigate("/");
-                      }
-                })
-
-        }else{
-           let item=shoppingCart[key];
-           let cart=JSON.parse(localStorage.getItem("cart"));
-           item["count"]=item.count-1;
-           cart[key]["count"]= cart[key].count-1;
-           if(item.count<=0){
-                 delete shoppingCart[key];
-                 delete cart[key];
-           }
-           setShoppingCart(shoppingCart);
-           localStorage.setItem("cart",JSON.stringify(cart));
-           setCartCount(cartCount-1);
-           setSubTotal(subtotal-item.variant.price);
+        let item=shoppingCart[key];
+        let cart=JSON.parse(localStorage.getItem("cart"));
+        item["count"]=item.count-1;
+        cart[key]["count"]= cart[key].count-1;
+        if(item.count<=0){
+                delete shoppingCart[key];
+                delete cart[key];
         }
+        setShoppingCart(shoppingCart);
+        localStorage.setItem("cart",JSON.stringify(cart));
+        setCartCount(cartCount-1);
+        setSubTotal(subtotal-item.variant.price);
+        
     }
 
     function showAlertNotice(message,signal){
@@ -219,7 +132,7 @@ function Cart(){
     }
 
     function goTocheckoutPage(){
-        //need to check
+       
         let cart=[];
         for(let key in shoppingCart){
             if(shoppingCart[key].count>shoppingCart[key].availableStocks){
@@ -228,6 +141,7 @@ function Cart(){
             }
             cart.push(shoppingCart[key]);
         }
+
         if(cart.length>0){
              navigate("/checkout?items="+encodeURIComponent(JSON.stringify(cart)));
         }else{
