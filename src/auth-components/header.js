@@ -71,7 +71,7 @@ function Header(){
                    <button className="bag-container-style"><FaUser className="bag-style"/></button>
                    <div className="account-dropdown-content">
                         <div onClick={()=>{navigate("/my-account")}}>My Account</div>
-                        <div>My Orders</div>
+                        <div onClick={()=>{navigate("/my-orders")}}>My Orders</div>
                         <div onClick={logoutUser}>Logout</div>
                     </div>
                 </div>

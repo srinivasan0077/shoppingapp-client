@@ -143,7 +143,7 @@ function Cart(){
         }
 
         if(cart.length>0){
-             navigate("/checkout?items="+encodeURIComponent(JSON.stringify(cart)));
+             navigate("/checkout?items="+encodeURIComponent(JSON.stringify(cart))+"&isCart=true");
         }else{
             showAlertNotice("Cannot move to checkout page as no items in cart!",1);
         }

@@ -46,6 +46,7 @@ import Order from './admin-components/order';
 import Payment from './Home/Payment';
 import OrderSuccess from './Home/OrderSuccess';
 import ViewOrder from './admin-components/vieworder';
+import MyOrders from './Home/MyOrders';
 
 
 const UserContext=createContext();
@@ -163,6 +164,7 @@ function App() {
               <Route path="view-cart"  element={<Cart/>}/>
               <Route path="checkout"  element={<Checkout/>}/>
               <Route path="my-account"  element={<Account/>}/>
+              <Route path="my-orders"  element={<MyOrders/>}/>
               <Route path="edit-account"  element={<EditAccount/>}/>
               <Route path="customer-care"  element={<Support/>}/>
               <Route path="terms&conditions"  element={<Conditions/>}/>

@@ -20,13 +20,14 @@ function Checkout(){
     const {logged,credential,scroll}=useContext(UserContext);
     const [queryParameters] = useSearchParams();
     const items=queryParameters.get("items");
+    const isCart=queryParameters.get("isCart");
     const [subTotal,setSubTotal]=useState(0);
     const navigate=useNavigate();
     const location=useLocation();
 
     useEffect(()=>{
         if(!logged){   
-            navigate("/loginPage",{state:{redirectUrl:location.pathname+location.search}});
+            navigate("/loginPage",{state:{redirectUrl:location.pathname+location.search},replace:true});
             return;
         }
 
@@ -77,17 +78,17 @@ function Checkout(){
           if(validateAddress()){
             try{
                 document.getElementById("place-order-button").disabled=true;
-                let inputData={orderItems:cart.current};
-                let headers={ 'Content-Type': 
-                'application/json;charset=utf-8'};
+
+                let inputData={orderItems:cart.current,isCart:false};
+               
                 if(pickedAddress.current!==undefined){
                     inputData={...inputData,addressId:pickedAddress.current};
                 }else{
                     inputData={...inputData,...address};
                 }
 
-                if(logged){
-                    headers['csrfToken']=credential;
+                if(isCart==="true"){
+                    inputData.isCart=true;
                 }
                 
                 fetch(properties.remoteServer+"/auth/api/orders",{
