@@ -11,6 +11,7 @@
     grid-template-columns: repeat(4, 1fr);
     grid-row-gap: 50px;
     min-width: 1000px;
+    place-items: center;
 }
 
 .topic-style{
