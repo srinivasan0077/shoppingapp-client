@@ -211,7 +211,7 @@ function ViewItem(){
             <div className="item-view">
                 {renderComponents()}
             </div>
-            <hr style={{marginTop:80}}/>
+            <hr style={{marginTop:100}}/>
             <div style={{marginTop:20}}>
                     <div className="view-variant-similar">{(svariants!==undefined && svariants.length>1)?"Similar Items":""}</div>
 
