@@ -174,7 +174,7 @@ function App() {
               <Route path="payment/:orderId"  element={<Payment/>}/>
               <Route path="payment/success"  element={<OrderSuccess/>}/>
             </Route>
-            <Route path='*' element={<NotFound/>}/>
+            <Route path="*" element={<NotFound/>}/>
           </Routes>
       </div>
     

@@ -8,7 +8,7 @@ import Select from "react-select";
 function Order(){
 
     const [orders,setOrders]=useState([]);
-    const options=[{value:"OPEN",label:"OPEN"},{value:"CLOSED",label:"CLOSED"},{value:"WAITING",label:"WAITING"},{value:"FAILED",label:"FAILED"}]
+    const options=[{value:"OPEN",label:"OPEN"},{value:"COD",label:"COD"},{value:"CLOSED",label:"CLOSED"},{value:"WAITING",label:"WAITING"},{value:"FAILED",label:"FAILED"}]
     const navigate=useNavigate();
     const {credential,logged,user}=useContext(UserContext);
 

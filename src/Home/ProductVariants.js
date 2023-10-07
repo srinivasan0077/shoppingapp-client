@@ -6,7 +6,7 @@ import BoxComponent from "./Box";
 import properties from "../properties/properties.json";
 import { useParams, useSearchParams } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
-
+import ReactLoading from "react-loading";
 
 function ProductVariants(){
     const {productId}=useParams();
@@ -77,23 +77,24 @@ function ProductVariants(){
             ).then(
             (json)=>{
                 if(json.status===2000){
-                            if(json.content.length!==8){
-                                hasMore.current=false;
+                            
+                        if(json.content.length!==8){
+                            hasMore.current=false;
+                        }
+
+                        let variants=json.content;
+                        if(variants.length>0){
+                            lastVariant.current=variants[variants.length-1];
+                            if(initial){
+                                variantComponents.current=variants;
+                            }else{
+                                variantComponents.current=variantComponents.current.concat(variants);
                             }
+                        }
 
-                            let variants=json.content;
-                            if(variants.length>0){
-                                lastVariant.current=variants[variants.length-1];
-                                if(initial){
-                                    variantComponents.current=variants;
-                                }else{
-                                    variantComponents.current=variantComponents.current.concat(variants);
-                                }
-                            }
+                        setComps(variantComponents.current);
 
-                            setComps(variantComponents.current);
-
-
+                      
                 }
             }
             )
@@ -111,14 +112,21 @@ function ProductVariants(){
                        
                             <div className="topic-style">{header.productName}</div>  
                            
-                            <InfiniteScroll  className="grid-container"  dataLength={comps.length} next={fetchVariants} hasMore={hasMore.current} scrollableTarget="scrollableDiv">
-                                {comps.map(variant=>{
-                                            return (
-                                                <div key={variant.variantId}>
-                                                    <BoxComponent variant={variant}/>
-                                                </div>
-                                            )
-                                })}
+                            <InfiniteScroll  dataLength={comps.length} next={fetchVariants}
+                             hasMore={hasMore.current} scrollableTarget="scrollableDiv" 
+                             loader={<div style={{marginTop:10,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                                        <ReactLoading type="bars" color="maroon"
+                                        height={100} width={50} />
+                                    </div>}>
+                                <div className="grid-container">
+                                    {comps.map(variant=>{
+                                                return (
+                                                    <div key={variant.variantId}>
+                                                        <BoxComponent variant={variant}/>
+                                                    </div>
+                                                )
+                                    })}
+                                </div>
                             </InfiniteScroll>
                       
                     </div>

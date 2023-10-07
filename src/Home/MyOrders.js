@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { UserContext } from "../App";
 import properties from "../properties/properties.json";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
 import "../css/orders.css";
 
@@ -12,10 +12,11 @@ function MyOrders(){
     const [comps,setComps]=useState(orderComponents.current)
     const lastOrder=useRef();
     const hasMore=useRef(true);
+    const location=useLocation();
 
     useEffect(()=>{
         if(!logged){
-            navigate("/loginPage");
+            navigate("/loginPage",{state:{redirectUrl:location.pathname+location.search},replace:true});
             return;
         }
 
@@ -74,6 +75,8 @@ function MyOrders(){
                             }
 
                             setComps(orderComponents.current);
+                }else if(json.status===4001){
+                    window.location.reload();
                 }
             }
             )
@@ -98,14 +101,23 @@ function MyOrders(){
                                             let inventories=order.inventories;
                                             let orderStatus="";
                                             let color="black";
+                                            let orderDetailsSize=0;
                                             for(let i=0;i<inventories.length;i++){
-                                                 orderDetails+=inventories[i].variant.name+"["+inventories[i].size.name+"]";
+                                                 let detail=inventories[i].variant.name+"["+inventories[i].size.name+"]";
+                                                 if(orderDetailsSize+detail.length>45){
+                                                         orderDetails+=detail.substring(0,45-orderDetailsSize)+"....";
+                                                         break;
+                                                 }else{
+                                                         orderDetails+=detail;
+                                                         orderDetailsSize+=detail.length;
+                                                 }
+
                                                  if(i!==inventories.length-1){
                                                     orderDetails+=","
                                                  }
                                             }
 
-                                            if(order.statusCode==="OPEN"){
+                                            if(order.statusCode==="OPEN" || order.statusCode==="COD"){
                                                 orderStatus="SHIPPING SOON";
                                             }else if(order.statusCode==="CLOSED"){
                                                 orderStatus="SHIPPED";

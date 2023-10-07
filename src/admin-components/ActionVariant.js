@@ -4,14 +4,16 @@ import properties from "../properties/properties.json";
 import "../admin-styles/general.css";
 import { UserContext } from "../App";
 import AsyncSelect from "react-select/async";
+import Select from "react-select";
 
 function ActionVariant(props){
  
    const [action,setAction]=useState();
    const {id,variantId}=useParams();
-   const [state,setState]=useState({variantId:0,name:"",price:"",item:{productItemId:id},color:{}});
+   const [state,setState]=useState({variantId:0,name:"",price:"",item:{productItemId:id},color:{},isCOD:false});
    const {credential,user,logged}=useContext(UserContext);
    const navigate=useNavigate(); 
+   const optionsForCOD=[{value:true,label:"Available"},{value:false,label:"Not Available"}];
 
    useEffect(()=>{
     if(!logged || user.roleid!==2){
@@ -38,7 +40,7 @@ function ActionVariant(props){
                         if(json.status===2000){
                             setAction("Edit");
                             setState({variantId:json.content.variantId,name:json.content.name,
-                            price:json.content.price,item:{productItemId:id},color:json.content.color});
+                            price:json.content.price,item:{productItemId:id},color:json.content.color,isCOD:json.content.isCOD});
                         }
                     }
                 )
@@ -162,6 +164,20 @@ function ActionVariant(props){
       return {value:state.color.colorId,label:state.color.name};
    }
 
+   function handleCODSelect(SelectedOption){
+    state.isCOD=SelectedOption.value
+    setState({...state});
+ }
+
+ function getDefaultCODOption(){
+   
+  for(let i=0;i<optionsForCOD.length;i++){
+       if(optionsForCOD[i].value===state.isCOD){
+           return optionsForCOD[i];
+       }
+  }
+}
+
    function renderForm(){
         if(action!==undefined){
             if(action==="Add"){
@@ -203,6 +219,10 @@ function ActionVariant(props){
                         <div style={{paddingTop: 10}}>
                             <div className="general-input-name">Price</div>
                             <input className="form-control" type={"number"} name="price" value={state.price} onChange={handleChange}/>
+                        </div>
+                        <div style={{paddingTop: 10}}>
+                            <div className="general-input-name">COD</div>
+                            <Select options={optionsForCOD} onChange={handleCODSelect} defaultValue={getDefaultCODOption}/>
                         </div>
                         <div className="container-align-center">
                             <input type={"button"} className="general-btn-style"  id="add-variant-btn" onClick={()=>{VariantAction("edit")}}  value=" Edit "/>

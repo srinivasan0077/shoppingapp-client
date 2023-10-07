@@ -105,18 +105,18 @@ function ViewItem(){
                 <div className="item-component">
                     <img className="img-view" alt="boximg-view-img" src={variant.images[0].url}/>
                     <div className="item-details">
-                        <div className="view-item-name">{variant.item.productItemName}</div>
                         <div className="view-variant-name">{variant.name}</div>
                         <div className="view-variant-price">Price:₹{variant.price}</div>
                         <div className="size-grid">
                               {renderSizes()}
                         </div>
-                        <div className="view-variant-available">{inventory!==undefined?"AVAILABLE:"+inventory.availableStocks:""}</div>
+                        <div className="view-variant-available" style={{color:(inventory!==undefined && inventory.availableStocks===0)?"red":"green"}}>{inventory!==undefined?(inventory.availableStocks===0?"Sold Out":"AVAILABLE:"+inventory.availableStocks):""}</div>
                         <div style={{display:"flex",justifyContent:"center",alignItems:"center",margin:10}}>
                               <div className="cart-item-count-handler"  onClick={()=>{modifyCount("sub")}}>-</div>
                               <div className="cart-item-count">{stocks}</div>
                               <div className="cart-item-count-handler" onClick={()=>{modifyCount("add")}}>+</div>
                         </div>
+                        <div style={{color:variant.isCOD?"green":"brown",textAlign:"center"}}>{variant.isCOD?"COD Available":"COD Not Available"}</div>
                         <div style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
                             <input type="button" value={"Add to Cart"} className="btn-css" onClick={addToCart}/>
                             <input type="button" value={"Buy Now"} className="btn-css" onClick={goToCheckOutPage}/>
@@ -130,6 +130,8 @@ function ViewItem(){
     function goToCheckOutPage(){
         if(inventory===undefined){
             showAlertNotice("Please pick the size!",1);
+        }else if(inventory.availableStocks===0){
+            showAlertNotice("Item sold out!",1);
         }else if(stocks>inventory.availableStocks){
             showAlertNotice("Only "+inventory.availableStocks+" items available!",1);
         }else{
@@ -144,6 +146,8 @@ function ViewItem(){
 
         if(inventory===undefined){
             showAlertNotice("Please pick the size!",1);
+        }else if(inventory.availableStocks===0){
+            showAlertNotice("Item sold out!",1);
         }else if(stocks>inventory.availableStocks){
             showAlertNotice("Only "+inventory.availableStocks+" items available!",1);
         }else if(cartCount+stocks>50){

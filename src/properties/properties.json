@@ -1,6 +1,6 @@
 {
     "remoteServer":"https://api.royall.in",
-    "stripePublishableKey":"pk_test_51NngrKSEWXnIb0husri8hbOKbdHoGFyVJ2NgoeRIscSwQY9IaDdUqecPAGqnxQNic8CGHxi0d2pzhomEFasf5BdK00zLNfevHI",
+    "stripePublishableKey":"pk_live_51NngrKSEWXnIb0huZAVbf1wTn0haUw4DpOW9BDj84x4DrZDU1ulbbEyoz3YTxWZghQuWJDIhwSdY3zrCmYyCULES00r4jGAMOk",
     "clientServer":"https://royall.in",
     "googleClientId":"281073765654-jllm80uflun7efbjgrdtu0eqesobvoj4.apps.googleusercontent.com"
 }

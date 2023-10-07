@@ -112,6 +112,7 @@ function Variant(){
                         <td>{variant.name}</td>
                         <td>{variant.color.name}</td>
                         <td>{variant.price}</td>
+                        <td>{variant.isCOD?"Available":"Not Available"}</td>
                         <td>  
                              <Link to={"/admin/hack/item/"+id+"/variant/"+variant.variantId+"/edit"} className="link-style">Edit</Link>
                              <Link to={"/admin/hack/item/"+id+"/variant/"+variant.variantId+"/image"} className="link-style">Images</Link>
@@ -140,6 +141,7 @@ function Variant(){
                     <th scope="col">Name</th>
                     <th scope="col">Color</th>
                     <th scope="col">Price</th>
+                    <th scope="col">COD</th>
                     <th scope="col">Action</th>
                     </tr>
                 </thead>

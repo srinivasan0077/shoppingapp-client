@@ -29,6 +29,10 @@ function Payment(){
             return;
         }
 
+        if(isNaN(orderId)){
+            navigate("/notfound",{replace:true})
+        }
+
         document.getElementById("payment-result-display").style.display="none";
          if(state!==undefined && state!==null && state.clientSecret!==undefined && state.totalPrice!==undefined &&
             state.clientSecret!==null && state.totalPrice!==null){

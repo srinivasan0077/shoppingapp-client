@@ -3,12 +3,14 @@ import Select from "react-select";
 import "../css/cart.css";
 import "../css/checkout.css";
 import "../css/login.css";
+import "../css/view-item.css";
 import {useRef, useState } from "react";
 import { useEffect } from "react";
 import { useContext } from "react";
 import { UserContext } from "../App";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import properties from "../properties/properties.json";
+import ReactLoading from "react-loading";
 
 function Checkout(){
 
@@ -17,11 +19,13 @@ function Checkout(){
     const cart=useRef([]);
     const [savedAddress,setSavedAddress]=useState([]);
     const pickedAddress=useRef(undefined);
-    const {logged,credential,scroll}=useContext(UserContext);
+    const {logged,credential,scroll,setCartCount}=useContext(UserContext);
     const [queryParameters] = useSearchParams();
     const items=queryParameters.get("items");
     const isCart=queryParameters.get("isCart");
     const [subTotal,setSubTotal]=useState(0);
+    const [isCOD,setIsCOD]=useState(true);
+    const [isLoading,setIsLoading]=useState(true);
     const navigate=useNavigate();
     const location=useLocation();
 
@@ -31,14 +35,16 @@ function Checkout(){
             return;
         }
 
-        document.getElementById("checkout-result-display").style.display="none";
-
         let total=0;
         let itemsObj=JSON.parse(items);
         cart.current.length=0;
         for(let item of itemsObj){
              cart.current.push({inventory:{inventoryId:item.inventoryId},count:item.count});
              total+=(item.count*item.variant.price);
+             console.log(item.isCOD)
+             if(!item.variant.isCOD){
+                setIsCOD(false);
+             }
         }
         setSubTotal(total);
       
@@ -63,6 +69,9 @@ function Checkout(){
                 }else{
                     setNewAddressForm(true);
                 }
+               
+                setIsLoading(false);  
+               
             })
         
     },[])
@@ -72,12 +81,9 @@ function Checkout(){
         setAddress({...address});
     }
 
-    function placeOrderAndGotoPaymentPage(){
-  
-        
-          if(validateAddress()){
+    function placeCODOrder(){
+        if(validateAddress()){
             try{
-                document.getElementById("place-order-button").disabled=true;
 
                 let inputData={orderItems:cart.current,isCart:false};
                
@@ -90,8 +96,10 @@ function Checkout(){
                 if(isCart==="true"){
                     inputData.isCart=true;
                 }
+
+                setIsLoading(true);
                 
-                fetch(properties.remoteServer+"/auth/api/orders",{
+                fetch(properties.remoteServer+"/auth/api/orders/_cod",{
                     method:"POST",
                     body:JSON.stringify(inputData),
                     credentials: "include",
@@ -104,7 +112,13 @@ function Checkout(){
                     ).then(
                     (json)=>{
                         if(json.status===2000){
-                            navigate("/payment/"+json.content.orderId,{state:{...json.content}});
+                            if(isCart===true){
+                                localStorage.removeItem("cart");
+                                setCartCount(0);
+                            }
+                            navigate("/payment/success?orderId="+json.content.orderId,{replace:true});
+                        }else if(json.status===4001){
+                            window.location.reload();
                         }else{
                             let resultContainer=document.getElementById("checkout-result-display");
                             let resultContent=document.getElementById("checkout-result-content");
@@ -113,11 +127,64 @@ function Checkout(){
                             resultContainer.style.border="1px solid red";
                             resultContainer.style.display="block";
                         }
+                        setIsLoading(false);
                     })
            }catch(err){
                 console.log(err);
-           }finally{
-                document.getElementById("place-order-button").disabled=false;
+           }
+        }
+
+    }
+
+    function placeOrderAndGotoPaymentPage(){
+  
+        
+          if(validateAddress()){
+            try{
+                let inputData={orderItems:cart.current,isCart:false};
+               
+                if(pickedAddress.current!==undefined){
+                    inputData={...inputData,addressId:pickedAddress.current};
+                }else{
+                    inputData={...inputData,...address};
+                }
+
+                if(isCart==="true"){
+                    inputData.isCart=true;
+                }
+
+                setIsLoading(true);
+
+                fetch(properties.remoteServer+"/auth/api/orders",{
+                    method:"POST",
+                    body:JSON.stringify(inputData),
+                    credentials: "include",
+                    headers: {
+                       'Content-Type': 'application/json;charset=utf-8',
+                       'csrfToken':credential
+                    }
+                    }).then(
+                    (stream)=>stream.json()
+                    ).then(
+                    (json)=>{
+                        
+                        if(json.status===2000){
+                            navigate("/payment/"+json.content.orderId,{state:{...json.content}});
+                        }else if(json.status===4001){
+                            window.location.reload();
+                        }else{
+                            let resultContainer=document.getElementById("checkout-result-display");
+                            let resultContent=document.getElementById("checkout-result-content");
+                            resultContent.innerText=json.status===5000?"Invalid Request!":json.message;
+                            resultContent.style.color="red";
+                            resultContainer.style.border="1px solid red";
+                            resultContainer.style.display="block";
+                        }
+                        setIsLoading(false);
+                        
+                    })
+           }catch(err){
+                console.log(err);
            }
         }
 
@@ -231,13 +298,9 @@ function Checkout(){
         if(!newAddressForm){
             return (                 
             <>
-
-               
                 <div className="checkout-link-style" onClick={()=>{setNewAddressForm(true)}}>+ New Address</div>
                 <div className="checkout-addresses">
-                     {renderSavedAddresses()}
-                    
-                     
+                     {renderSavedAddresses()}                    
                  </div>
             </>
       )
@@ -289,20 +352,33 @@ function Checkout(){
         <>
         <div style={{textAlign:"center",padding:5,fontSize:20,color:"#2F4F4F"}}>Checkout</div>
         <div className="login-result-container">
-                    <div className="login-result" style={{width:500}} id="checkout-result-display"><div className="login-result-content" id="checkout-result-content"></div></div>
+                        <div className="login-result" style={{width:500}} id="checkout-result-display"><div className="login-result-content" id="checkout-result-content"></div></div>
         </div>
-        <div className="cart-container">
-                <div className="cart-item-container">
-                      {renderComponent()}
-                 
-                </div>
-                <div className="cart-buy-container">
-                        <div className="cart-buy-container-heading">Pay Now!</div>
-                        <div style={{textAlign:"center",fontSize:15,letterSpacing:2,color:"#2F4F4F"}}>Subtotal : {subTotal}</div>
-                        <div style={{textAlign:"center",fontSize:15,letterSpacing:3,margin:10}}><input className="general-usr-btn-style" id="place-order-button" type="button" value={"Proceed to Pay"} onClick={placeOrderAndGotoPaymentPage}/></div>
-                </div>
-        </div>
+        {isLoading?
+           <div style={{marginTop:100,display:"flex",alignItems:"center",justifyContent:"center"}}>
+            <ReactLoading type="bars" color="maroon"
+           height={100} width={50} />
+           </div>
+        :
+        <>
+            <div className="cart-container">
+                    <div className="cart-item-container">
+                        {renderComponent()}
+                    
+                    </div>
+                    <div className="cart-buy-container">
+                            <div className="cart-buy-container-heading">Pay Now!</div>
+                            <div style={{textAlign:"center",fontSize:15,letterSpacing:2,color:"#2F4F4F"}}>Subtotal : {subTotal}</div>
+                            {isCOD &&
+                            <div style={{textAlign:"center",fontSize:15,letterSpacing:3,margin:5}}><input className="btn-css" id="cod-order-button" style={{width:200,height:35}} type="button" value={"Cash on Delivery"} onClick={placeCODOrder}/></div>
+                            }
+                            <div style={{textAlign:"center",fontSize:15,letterSpacing:3,margin:5}}><input className="btn-css" id="place-order-button" style={{width:200,height:35,marginTop:0}} type="button" value={"Proceed to Pay"} onClick={placeOrderAndGotoPaymentPage}/></div>
+                    </div>
+            </div>
         </>
+         }
+        </>
+                   
     )
 }
 

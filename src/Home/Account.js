@@ -2,17 +2,17 @@ import { useContext, useEffect, useState } from "react";
 import "../css/account.css";
 import { UserContext } from "../App";
 import properties from "../properties/properties.json";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 
 function Account(){
     const {logged,credential}=useContext(UserContext);
     const navigate=useNavigate();
     const [user,setUser]=useState({firstname:"",lastname:"",email:"",phone:""});
-    
+    const location=useLocation();
     useEffect(()=>{
         if(!logged){
-            navigate("/loginPage");
+            navigate("/loginPage",{state:{redirectUrl:location.pathname+location.search},replace:true});
             return;
         }
         fetchUser();

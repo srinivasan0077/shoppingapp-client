@@ -2,7 +2,7 @@ import "../css/login.css";
 import { UserContext } from "../App";
 import { useContext, useEffect, useState } from "react";
 import properties from "../properties/properties.json";
-import { useNavigate,useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate,useSearchParams } from "react-router-dom";
 
 
 
@@ -15,11 +15,12 @@ function EditAccount(){
     const edit=queryParameters.get("edit");
     const value=queryParameters.get("value");
     const [state,setState]=useState({});
+    const location=useLocation();
 
     useEffect(()=>{
            document.getElementById("editaccount-result-display").style.display="none";
            if(!logged){
-               navigate("/loginPage");
+               navigate("/loginPage",{state:{redirectUrl:location.pathname+location.search},replace:true});
            }
     },[logged])
 
