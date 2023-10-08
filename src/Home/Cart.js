@@ -163,7 +163,7 @@ function Cart(){
                                 <div className="cart-item-detail" style={{color:"#C0C0C0"}}>{shoppingCart[key].variant.item.productItemName}</div>
                                 <div className="cart-item-detail" style={{color:"#BC8F8F"}}>{shoppingCart[key].variant.name}</div>
                                 <div className="cart-item-detail" style={{color:"#708090"}}>Price : ₹{shoppingCart[key].variant.price}</div>
-                                <div className="cart-item-detail" style={{color:"#708090"}}>Size : {shoppingCart[key].size.name}</div>
+                                {shoppingCart[key].size.name!=="*" && <div className="cart-item-detail" style={{color:"#708090"}}>Size : {shoppingCart[key].size.name}</div>}
                                 <div className="cart-item-detail" style={{color:"green"}}>Available:{shoppingCart[key].availableStocks}</div>
                                 <div className="cart-item-detail" style={{color:shoppingCart[key].variant.isCOD?"green":"brown",fontSize:15}}>{shoppingCart[key].variant.isCOD?"COD Available":"COD Not Available"}</div>
                         </div>

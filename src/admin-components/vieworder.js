@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { UserContext } from "../App";
 import properties from "../properties/properties.json";
 
@@ -47,13 +47,15 @@ function ViewOrder(){
             order.inventories.map(inventory=>{
                 return(
                     <tr key={inventory.inventoryId}>
-                        <td>{inventory.inventoryId}</td>
+                        <td>{inventory.variant.variantId}</td>
                         <td>{inventory.variant.name}</td>
+                        <td>{inventory.variant.item.productItemId}</td>
                         <td>{inventory.variant.item.productItemName}</td>
                         <td>{inventory.size.name}</td>
                         <td>{inventory.variant.color.name}</td>
                         <td>{inventory.variant.price}</td>
                         <td>{inventory.orderedCount}</td>
+                        <td><Link to={"/admin/hack/item/"+inventory.variant.item.productItemId+"/variant"} className="link-style">View</Link></td>
                     </tr>
                 )
             })
@@ -104,13 +106,15 @@ function ViewOrder(){
                   <table className="table" style={{margin:20}}>
                         <thead>
                             <tr>
-                            <th scope="col">Inventory ID</th>
+                            <th scope="col">Id</th>
                             <th scope="col">Name</th>
+                            <th scope="col">Type Id</th>
                             <th scope="col">Type</th>
                             <th scope="col">Size</th>
                             <th scope="col">Color</th>
                             <th scope="col">Price</th>
                             <th scope="col">Ordered</th>
+                            <th scope="col">View Item</th>
                             </tr>
                         </thead>
                         <tbody>

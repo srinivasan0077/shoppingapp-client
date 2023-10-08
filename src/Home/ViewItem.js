@@ -16,7 +16,7 @@ function ViewItem(){
     const [stocks,setStocks]=useState(1)
     const {cartCount,setCartCount}=useContext(UserContext);
     const navigate=useNavigate();
-
+    
     useEffect(()=>{
         setInventory(undefined);
         fetch(properties.remoteServer+"/public/api/variants/"+variantId,{
@@ -25,8 +25,14 @@ function ViewItem(){
             (stream)=>stream.json()
             ).then(
             (json)=>{
-                if(json.status===2000){
+                if(json.status===2000 && json.content!==null){
+                    
                     setVariant(json.content);
+
+                    if(json.content.inventories!==null && json.content.inventories.length===1 && json.content.inventories[0].size.name==="*"){
+                        setInventory(json.content.inventories[0])
+                    }
+
                     fetch(properties.remoteServer+"/public/api/items/"+json.content.item.productItemId+"/variants",{
                         credentials: "include"
                         }).then(
@@ -37,10 +43,14 @@ function ViewItem(){
                                      setSVariants(json.content)
                                 }
                             }
-                        )
+                     )
+                }else if(json.status===4000){
+                    navigate("/notfound",{replace:true});
                 }
             }
+
         )
+        console.log("Render")
     },[variantId])
 
    function renderSimilarVariants(){
@@ -76,16 +86,20 @@ function ViewItem(){
    } 
 
    function renderSizes(){
-       return (
-       variant.inventories.map(inventoryObj=>{
-        return (
-            <div className="size-style" key={inventoryObj.inventoryId} id={inventoryObj.inventoryId} onClick={()=>{pickInventory(inventoryObj)}}>
-                 {inventoryObj.size.name}
-            </div>
-       )
-       })
+        if(variant.inventories!==null){
+                return (
+                        variant.inventories.map(inventoryObj=>{
+                            if(inventoryObj.size.name!=="*"){
+                                return (
+                                    <div className="size-style" key={inventoryObj.inventoryId} id={inventoryObj.inventoryId} onClick={()=>{pickInventory(inventoryObj)}}>
+                                        {inventoryObj.size.name}
+                                    </div>
+                                )
+                            }
+                        }) 
+                );
+        }
     
-       );
    }
 
     
