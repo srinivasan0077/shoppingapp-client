@@ -93,7 +93,7 @@ function Checkout(){
                     inputData={...inputData,...address};
                 }
 
-                if(isCart==="true"){
+                if(isCart==="true" || isCart===true){
                     inputData.isCart=true;
                 }
 
@@ -112,7 +112,7 @@ function Checkout(){
                     ).then(
                     (json)=>{
                         if(json.status===2000){
-                            if(isCart===true){
+                            if(isCart==="true" || isCart===true){
                                 localStorage.removeItem("cart");
                                 setCartCount(0);
                             }
@@ -149,7 +149,7 @@ function Checkout(){
                     inputData={...inputData,...address};
                 }
 
-                if(isCart==="true"){
+                if(isCart==="true" || isCart===true){
                     inputData.isCart=true;
                 }
 
