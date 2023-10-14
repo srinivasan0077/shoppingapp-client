@@ -8,7 +8,7 @@ function BoxComponent(props){
              <img className="box-img" alt="box-img" src={props.variant.images[0].url}/>
              <div className="box-description">
                 <div className="font-style-variant">{props.variant.name}</div>
-                <div className="font-style-item-price">Price:{props.variant.price}</div>
+                <div className="font-style-item-price">Price:₹{props.variant.price}</div>
              </div>
         </div>
     )
