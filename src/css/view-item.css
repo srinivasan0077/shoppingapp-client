@@ -1,6 +1,5 @@
 
 .item-view{
-    height: 500px;
     margin:30px 200px 50px 200px;
 }
 
@@ -156,8 +155,8 @@
     }
 
     .img-view{
-        height: 300px;
-        width: 300px;
+        height: 400px;
+        width: 350px;
     }
 
     .item-details{
