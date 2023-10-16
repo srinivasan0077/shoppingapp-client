@@ -1,6 +1,6 @@
 import { Outlet,useNavigate } from "react-router-dom";
 import "../css/header.css";
-import {FaShoppingCart,FaBars,FaUser } from 'react-icons/fa';
+import {FaShoppingCart,FaBars,FaUser, FaPhoneAlt, FaMailBulk, FaAddressCard } from 'react-icons/fa';
 import { UserContext } from "../App";
 import { useContext, useEffect, useState} from "react";
 import properties from "../properties/properties.json";
@@ -144,12 +144,32 @@ function Header(){
                     </div>
                     <div onClick={()=>{toggleSideNav();navigate("/");}}>Home</div>
                     {renderHeaders(true,true)}
-                    <div onClick={()=>{toggleSideNav();navigate("/customer-care")}}>Customer Service</div>
+                    <div onClick={()=>{toggleSideNav();navigate("/customer-care")}}>Support</div>
                 </div>
                 
             </div>
         </div>
         <Outlet/>
+        <div className="contact-style-container">
+              <div className="contact-style">
+                   <div className='contact-style-child'>
+                        <div>Contact Us</div>
+                    </div>
+                    <div className='contact-style-child'>
+                        <FaPhoneAlt style={{marginRight:10}}/>
+                        <div>+91-9843556495 +91-9080110805</div>
+                    </div>
+                    <div className='contact-style-child'>
+                        <FaMailBulk style={{marginRight:10}}/>
+                        <div>royallcustomerservice1@gmail.com</div>
+                    </div>
+                    <div className='contact-style-child'>
+                        <FaAddressCard style={{marginRight:10}}/>
+                        <div>No:50,5th Cross,Sakthi Nagar,Saram,Puducherry 605013</div>
+                    </div>
+              </div>
+              <div style={{margin:10,color:"white"}}>© 2023 - Royall - All rights reserved.</div>
+        </div>
         </>
     )
 }
